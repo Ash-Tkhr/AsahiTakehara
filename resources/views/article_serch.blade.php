@@ -1,4 +1,13 @@
 <html lang="ja">
+<?php
+session_start();
+$error = array();
+$clean = array(); 
+$referer = $_SERVER['HTTP_REFERER']; 
+$url = 'contact.php';
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
+    ?>
 <head>
     <title>Astreet</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
@@ -58,7 +67,9 @@
   </section>
 
   <!-- 以下、テスト用のあれこれ -->
-  <h1>検索結果一覧</h1>
+  @csrf
+  <h1>の検索結果</h1>
+ 
     <p>記事を<a href="{{ route('article') }}">選択</a></p>
   <!-- 以上、テスト用のあれこれ -->
 

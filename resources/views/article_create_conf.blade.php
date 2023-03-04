@@ -64,6 +64,17 @@
 </div>
 
 <main role="main" class="container">
+@csrf
+<tr>
+  <th scope="col">{{$article['title']}}</th>
+  <th scope="col">{{$article['image']}}</th>
+  <th scope="col">{{$article['category1']}}</th>
+  <th scope="col">{{$article['category2']}}</th>
+  <th scope="col">{{$article['category3']}}</th>
+  <th scope="col">{{$article['category4']}}</th>
+  <th scope="col">{{$article['category5']}}</th>
+  <th scope="col">{{$article['text']}}</th>
+</tr>
   <div class="d-flex align-items-center p-3 my-3 text-white-50 bg-purple rounded shadow-sm">
     <img class="mr-3" src="../../assets/brand/bootstrap-outline.svg" alt="" width="48" height="48">
     <div class="lh-100">

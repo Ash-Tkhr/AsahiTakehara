@@ -1,5 +1,6 @@
-<html lang="ja"><head>
-    <title>Astreet</title>
+<html lang="ja">
+<head>
+    <title>Astreetp</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <link href="signin.css" rel="stylesheet">
   </head>
@@ -20,10 +21,26 @@
   <div class="checkbox mb-3">
       <a> パスワードをお忘れの方はこちら</a>
   </div>
-  <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+  <button class="login-button" type="submit">ログイン</button>
   <p class="mt-5 mb-3 text-muted">© 2017-2018</p>
 </form>
-
+<style>
+  .login-button {
+    font-weight: 400!important;
+    cursor: pointer;
+    padding: 0.5rem 1rem;
+    font-size: 1.25rem;
+    line-height: 1.5;
+    border-radius: 0.3rem;
+    color: #fff;
+    background-color: #007bff;
+    border-color: #007bff;
+    vertical-align: middle;
+    display: block;
+    width: 10%;
+    margin: 0 auto;
+}
+</style>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 <script>
   window.jQuery || document.write('<script src="/docs/4.3/assets/js/vendor/jquery-slim.min.js"><\/script>')

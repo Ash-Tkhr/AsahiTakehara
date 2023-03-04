@@ -1,6 +1,6 @@
 <html lang="ja">
 <head>
-    <title>Blog Template for Bootstrap ﾂｷ Bootstrap</title>
+    <title>Astreet</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <link href="blog.css" rel="stylesheet">
   </head>
@@ -57,9 +57,22 @@
   </div>
 
     <!-- 以下、テスト用のあれこれ -->
-<p>カテゴリーが完全一致している記事を<a href="{{ route('article.serch') }}">検索</a></p>
+
 <p>各カテゴリーで<a href="{{ route('article.serch') }}">個別に検索</a></p>
-<p>この記事を<a href="{{ route('article.serch') }}">ブックマーク</a></p>
+<div class="ml-3">
+                        <form action="{{ route('article.serch')}}" method="post">
+                            @csrf
+                            <label for="serchword">記事検索テスト</label>
+                            <input type='text' class='form-control' name='serchword' id='serchword' value=""/>
+                                <!-- valueに"{{old('～～')}}"を入れる -->
+                        </div>
+                        <br>
+                        <div class="ml-3">
+                        <button type='submit' class='btn btn-secondary'>ブックマーク</button>
+                        </form>
+                        </div>
+                        <br>
+                        <br>
     <!-- 上はまだルートを変更していないので、INSERT処理させる。
     あと、ajaxで、ブックマーク登録前は「登録」ボタン、登録後は「登録解除」ボタンにする -->
     <div class="ml-3">

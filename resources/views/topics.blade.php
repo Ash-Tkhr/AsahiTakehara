@@ -60,6 +60,7 @@
 
   <!-- 以下、テスト用のあれこれ -->
 <p>カテゴリーが完全一致している記事を<a href="{{ route('article.serch') }}">検索</a></p>
+<p>このトピックについての<a href="{{ route('article.create') }}">記事を投稿</a></p>
   <!-- 以上、テスト用のあれこれ -->
 
   <div class="row mb-2">

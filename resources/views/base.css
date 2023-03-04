@@ -1,0 +1,423 @@
+@charset "UTF-8";
+/* reset */
+body, h1, h2, h3, h4, h5, h6, p, address,
+ul, ol, li, dl, dt, dd, img, form, table, tr, th, td {
+	margin: 0;
+	padding: 0;
+	border: none;
+	font-style: normal;
+	font-weight: normal;
+	font-size: 100%;
+	text-align: left;
+	list-style-type: none;
+	border-collapse: collapse;
+}
+textarea { font-size: 100%; vertical-align:middle;}
+img { border-style: none; display: block; }
+hr { display: none; }
+em{font-style: normal}
+input{line-height:auto;vertical-align:middle;}
+strong.more{color:#c30}
+a{text-decoration: none;}
+
+body {
+	font-family:'Trebuchet MS','PMingLiU-ExtB','MingLiU-ExtB','Meiryo UI','ヒラギノ角ゴ Pro W3','Hiragino Kaku Gothic Pro','メイリオ','Meiryo','ＭＳ Ｐゴシック',sans-serif;
+}
+
+
+* {
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-o-box-sizing: border-box;
+	-ms-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+/* 共通設定 */
+img {
+	cursor: pointer;
+}
+h2 {
+  width: 100%;
+  font-size: 22px;
+  margin: 0 auto 20px auto;
+  text-align: center;
+}
+.section {
+  width: 75%;
+  margin: 0 auto;
+	padding: 80px 0 20px 0;
+}
+.btn-box {
+  width: 100%;
+  margin: 20px auto;
+  text-align: center;
+}
+button {
+  width: 250px;
+  height: 50px;
+  margin: 10px 0;
+  cursor: pointer;
+  border: 1.5px solid #67b2b5;
+  background-color: white;
+  box-shadow: 1px 3px 2px #aaaaaa;
+}
+
+/* TOPに戻るボタン */
+#jump {
+	display: none;
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  width: 10%;
+  color: white;
+  background-color: black;
+}
+
+/* 空室検索モーダル */
+#modal {
+  display: none;
+}
+#modal .modal-layer {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  z-index: 3;
+  background-color: rgba(0, 0, 0, 0.7);
+}
+#modal .modal-container {
+	position: fixed;
+	inset: 0;
+  margin: 5% auto 10% auto;
+  width: 40%;
+  background-color: white;
+  z-index: 4;
+  border-radius: 10px;
+}
+#modal .modal-container h2 {
+  margin: 3%;
+	font-weight: bold;
+	text-align: center;
+}
+#modal .modal-container dl {
+	padding: 20px;
+}
+#modal .modal-container dd {
+  font-size: 17px;
+	padding: 5px 0;
+	margin: 0 auto;
+}
+#modal .modal-container input {
+  width: 100%;
+  font-size: 1.2rem;
+  padding: 10px 2.5px;
+  border-radius: 8px;
+  border: 1px solid #aaa;
+}
+#modal .modal-container button {
+	width: 100%;
+	margin-top: 20px;
+	border-radius: 8px;
+	color: white;
+	font-size: 1.0rem;
+	background-color: #67b2b5;
+}
+
+/* ナビ */
+nav {
+  display: flex;
+  width: 100%;
+  height: 80px;
+  padding: 3px 20px;
+  position: fixed;
+  background-color: none;
+  z-index: 2;
+}
+.scrolled {
+	background-color: rgba(0, 0, 0, 0.7);
+}
+nav .box-left {
+  width: 20%;
+  height: 90%;
+	margin: auto auto 0 auto;
+}
+nav .box-left img {
+  height: 100%;
+}
+nav .box-middle {
+  width: 60%;
+  display: flex;
+  padding: 0 0 0 180px;
+}
+nav .box-middle a {
+  margin: auto;
+  cursor: pointer;
+	color: white;
+}
+nav .box-right {
+  width: 20%;
+  display: flex;
+  margin: 0 auto;
+}
+nav #search_btn { /* 空室検索ボタン */
+  margin: auto 50px auto auto;
+  padding: 5px 30px;
+	color: white;
+  border: 1px solid white;
+  border-radius: 7px;
+  cursor: pointer;
+}
+
+/* ヘッダー */
+header {
+  background-image: url("images/top.jpeg");
+  min-height: 100vh;
+  background-size: cover;
+  background-color:rgba(255,255,255,0.2);
+  background-blend-mode:lighten;
+  margin-bottom: 40px;
+}
+header h1 {
+  position: absolute;
+  font-size: 70px;
+  color: white;
+  top: 240px;
+  left: 30px;
+}
+
+/* 施設 */
+#location .location_box {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  grid-auto-rows: minmax(100px, auto);
+}
+#location img {
+  width: 100%;
+  height: 180px;
+	border-radius: 7px;
+  object-fit: cover;
+}
+#location h4 {
+  font-size: 1.1em;
+}
+#location p {
+  font-size: 0.9em;
+}
+
+
+/* おすすめの体験 */
+#activity .activity_box {
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  display: grid;
+  grid-template-columns: 2fr 1fr 2fr;
+  grid-template-rows: 200px 200px 310px;
+  gap: 20px;
+}
+#activity img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+#activity img:hover {
+  transform: scale(1.08,1.08);
+  transition: 1.5s all;
+}
+#activity div:nth-child(1) {
+   grid-column: 1 / 3;
+   grid-row: 1 / 3;
+}
+#activity div:nth-child(5) {
+  grid-column-start: 2;
+  grid-column-end: 4;
+}
+.grid {
+  position: relative;
+  cursor: pointer;
+	overflow: hidden;
+}
+.grid p {
+  position: absolute;
+  bottom: 30px;
+  left: 30px;
+  color: white;
+  font-size: 2em;
+}
+
+/* 旅の提案 */
+#suggest img {
+  width: 100%;
+  margin: 0 auto;
+}
+.animate {
+  opacity : 0;
+  transform : translate(0, 50px);
+  transition: all 2s;
+}
+.fadeIn {
+  opacity : 1;
+  transform : translate(0, 0);
+  transition: all 3s;
+}
+
+/* お知らせ */
+#notification .topic {
+  display: flex;
+  margin: 20px 0;
+  padding: 20px 40px;
+	background-color: #EEEEEE;
+}
+#notification .topic-middle {
+  border-top: 4px solid #EEEEEE;
+  border-bottom: 4px solid #EEEEEE;
+  margin: 20px 0;
+}
+#notification .topic img {
+  width: 35%;
+  margin: 0 50px 0 30px;
+}
+#notification .content {
+  margin: auto;
+  width: 100%;
+}
+
+/* フッター */
+footer {
+  background-color: #EEEEEE;
+  margin-top: 100px;
+  padding: 20px 0 40px 0;
+}
+footer #icon-box {
+  width: 15%;
+  display: flex;
+  margin: auto;
+}
+footer img {
+  width: 15%;
+  margin: auto;
+}
+#footer {
+  width: 75%;
+  height: 250px;
+  margin: auto;
+  padding: 20px 0;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  grid-auto-rows: minmax(100px, auto);
+  grid-auto-columns: 400px;
+}
+#footer .xxx {
+  font-size: 1.2em;
+  padding: 20px 40px;
+  border-right: 4px solid #67b2b5;
+}
+#footer .xxx-right {
+  border-right: none;
+}
+
+/* contact.html */
+#navi {
+	position: absolute;
+	top: 0;
+	background-color: rgba(0, 0, 0, 0.7);
+}
+#contact_box {
+	width: 60%;
+	margin: 150px auto 80px auto;
+	border: 1px solid #CFD8DC;
+	border-radius: 15px;
+	padding: 15px 0;
+}
+.required {
+	color: red;
+}
+
+#contact_box h2 {
+	font-size: 20px;
+	padding-bottom: 10px;
+	border-bottom: 1px solid #CFD8DC;
+}
+#contact_box form {
+	padding: 0 30px;
+}
+#contact_box form h3 {
+	border-top: 1px solid black;
+	border-bottom: 1px solid black;
+	margin: 20px 0 10px 0;
+	padding: 10px 30px;
+	background-color: #EEEEEE;
+}
+#contact_box form p {
+	font-size: 15px;
+}
+#contact_box form input {
+	width: 100%;
+	height: 40px;
+	font-size: 1.1rem;
+	border-radius: 8px;
+	border: 1px solid #aaa;
+}
+#contact_box form dt {
+	margin: 10px 0 3px 0;
+}
+#contact_box textarea {
+	resize: none;
+  width: 100%;
+  height: 33vh;
+  font-size: 1.1rem;
+  padding: 10px 2.5px;
+  border-radius: 8px;
+  border: 1px solid #aaa;
+}
+#contact_box form .send {
+	width: 100%;
+	margin: 20px 0 30px 0;
+	font-size: 17px;
+	background-color: #67b2b5;
+	border-radius: 6px;
+}
+
+.db {
+  margin: auto;
+  text-align: center;
+}
+
+/* confirm.html */
+#confirm dt {
+	margin-top: 10px;
+	border-bottom: 1px solid #aaa;
+}
+#confirm dd {
+	padding: 1%;
+}
+#confirm .btn_box {
+	display: flex;
+	margin: 40px 0 30px 0;
+}
+#confirm .btn_box button {
+	width: 100%;
+ margin: 0 5px;
+ border-radius: 6px;
+}
+.btn_box .conf_send {
+	background-color: #67b2b5;
+}
+
+/* complete.html */
+#complete {
+	margin-left: 30px;
+}
+
+
+/* crud table*/
+.table table {
+  margin: 0 auto;
+  text-align: center;
+  border-collapse: collapse;
+}
+
+.table table tr,td{
+  padding: 3px;
+  text-align: center;
+}

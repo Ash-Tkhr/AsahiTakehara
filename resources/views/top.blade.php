@@ -1,4 +1,13 @@
 <html lang="ja">
+<?php
+session_start();
+$error = array();
+$clean = array(); 
+// $referer = $_SERVER['HTTP_REFERER']; 
+$url = 'contact.php';
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
+    ?>
 <head>
     <title>Astreet</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
@@ -62,9 +71,13 @@
                         <div class="ml-3">
                         <form action="{{ route('article.serch')}}" method="post">
                             @csrf
-                            記事検索テスト<input type='text' class='form-control' name='fromdate' id='date' value=""/>
+                            <label for="serchword">記事検索テスト</label>
+                            <input type='text' class='form-control' name='serchword' id='serchword' value=""/>
                                 <!-- valueに"{{old('～～')}}"を入れる -->
                         </div>
+                        <?php
+                            $_SESSION['serchword'] = htmlspecialchars(isset($_POST['serchword']), ENT_QUOTES, "UTF-8");
+                        ?>
                         <div class="ml-3">
                         <button type='submit' class='btn btn-primary'>検索</button>
                         </form>

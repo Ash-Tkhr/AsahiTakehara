@@ -1,0 +1,117 @@
+<?php
+
+use Illuminate\Database\Seeder;
+use Carbon\Carbon;
+
+class ArticlesTableSeeder extends Seeder
+{
+    /**
+     * Run the database seeds.
+     *
+     * @return void
+     */
+    public function run()
+    {
+        $params=[				
+            [
+                'user_id'=>'1',
+                'category1'=>'1',
+                'category2'=>'3',
+                'category3'=>'4',
+                'category4'=>'5',
+                'category5'=>'6',
+                'title'=>'テスト１',
+                'image'=>'',
+                'text'=>'テスト１',
+                'interest'=>'1',
+                'repeat'=>'1',
+                'study'=>'1',
+                'answer'=>'1',
+                'reaction'=>'1',
+                'topics_id'=>'0',
+                'created_at'=>Carbon::now(),
+                'updated_at'=>Carbon::now(),
+            ],
+            [
+                'user_id'=>'1',
+                'category1'=>'1',
+                'category2'=>'3',
+                'category3'=>'4',
+                'category4'=>'5',
+                'category5'=>'6',
+                'title'=>'テスト２',
+                'image'=>'',
+                'text'=>'テスト',
+                'interest'=>'1',
+                'repeat'=>'1',
+                'study'=>'1',
+                'answer'=>'1',
+                'reaction'=>'1',
+                'topics_id'=>'0',
+                'created_at'=>Carbon::now(),
+                'updated_at'=>Carbon::now(),
+            ],
+            [
+                'user_id'=>'1',
+                'category1'=>'1',
+                'category2'=>'3',
+                'category3'=>'4',
+                'category4'=>'5',
+                'category5'=>'6',
+                'title'=>'テスト３',
+                'image'=>'',
+                'text'=>'テスト',
+                'interest'=>'1',
+                'repeat'=>'1',
+                'study'=>'1',
+                'answer'=>'1',
+                'reaction'=>'1',
+                'topics_id'=>'0',
+                'created_at'=>Carbon::now(),
+                'updated_at'=>Carbon::now(),
+            ],
+            [
+                'user_id'=>'1',
+                'category1'=>'1',
+                'category2'=>'3',
+                'category3'=>'4',
+                'category4'=>'5',
+                'category5'=>'6',
+                'title'=>'テスト４',
+                'image'=>'',
+                'text'=>'テスト',
+                'interest'=>'1',
+                'repeat'=>'1',
+                'study'=>'1',
+                'answer'=>'1',
+                'reaction'=>'1',
+                'topics_id'=>'0',
+                'created_at'=>Carbon::now(),
+                'updated_at'=>Carbon::now(),
+            ],
+            [
+                'user_id'=>'1',
+                'category1'=>'1',
+                'category2'=>'3',
+                'category3'=>'4',
+                'category4'=>'5',
+                'category5'=>'6',
+                'title'=>'テスト５',
+                'image'=>'',
+                'text'=>'テスト',
+                'interest'=>'1',
+                'repeat'=>'1',
+                'study'=>'1',
+                'answer'=>'1',
+                'reaction'=>'1',
+                'topics_id'=>'0',
+                'created_at'=>Carbon::now(),
+                'updated_at'=>Carbon::now(),
+            ]
+    ];
+
+    foreach($params as $param){
+        DB::table('articles')->insert($param);
+    };
+    }
+}
