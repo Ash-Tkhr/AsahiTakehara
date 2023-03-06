@@ -29,36 +29,32 @@ class RegistrationController extends Controller
         ]);
     }
 
-    public function newArticle(Request $request){
+    public function newArticle(int $id,Request $request){
         $article=new Article;
         $category=new Category;
 
-        $category->category1=$request->category1;
-        $category->category2=$request->category2;
-        $category->category3=$request->category3;
-        $category->category4=$request->category4;
-        $category->category5=$request->category5;
+        $category->name=$request->category1;
+        $category->name=$request->category2;
+        $category->name=$request->category3;
+        $category->name=$request->category4;
+        $category->name=$request->category5;
         $category->save($category);
 
-        $article->user_id=$request->user_id;
+        $columns=['user_id','title','image','text','topics_id'];
         $article->category1=$request->category1;
         $article->category2=$request->category2;
         $article->category3=$request->category3;
         $article->category4=$request->category4;
         $article->category5=$request->category5;
-        $article->title=$request->title;
-        $article->image=$request->image;
-        $article->text=$request->text;
         $article->interest='1';
         $article->repeat='1';
         $article->study='1';
         $article->answer='1';
         $article->reaction='1';
-        $article->topics_id=$request->topics_id;
         foreach($columns as $column){
-            $income->$column=$request->$column;
+            $article->$column=$request->$column;
         }
-       $article->save($article);
+       $article->save();
         return redirect('article_create_conf',[
             'article'=>$article,
         ]);

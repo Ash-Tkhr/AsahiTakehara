@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddTopicsIdArticles extends Migration
+class AddDelFlgBookmarks extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,8 @@ class AddTopicsIdArticles extends Migration
      */
     public function up()
     {
-        Schema::table('articles', function (Blueprint $table) {
-            $table->integer('topics_id');
+        Schema::table('bookmarks', function (Blueprint $table) {
+            $table->boolean('del_flg')->default(0);
         });
     }
 
@@ -25,8 +25,8 @@ class AddTopicsIdArticles extends Migration
      */
     public function down()
     {
-        Schema::table('articles', function (Blueprint $table) {
-            $table->dropColumn('topics_id');
+        Schema::table('bookmarks', function (Blueprint $table) {
+            $table->dropColumn('del_flg');
         });
     }
 }

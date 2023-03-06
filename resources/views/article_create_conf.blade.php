@@ -64,8 +64,7 @@
 </div>
 
 <main role="main" class="container">
-@csrf
-<tr>
+<tr>@csrf
   <th scope="col">{{$article['title']}}</th>
   <th scope="col">{{$article['image']}}</th>
   <th scope="col">{{$article['category1']}}</th>

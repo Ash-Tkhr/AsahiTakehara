@@ -1,10 +1,11 @@
 @extends('layout')
+
 @section('content')
   <div class="container">
     <div class="row justify-content-center">
       <div class="col col-md-offset-3 col-md-6">
         <nav class="card mt-5">
-          <div class="card-header">ログイン</div>
+          <div class="card-header">会員登録</div>
           <div class="card-body">
             @if($errors->any())
               <div class="alert alert-danger">
@@ -13,15 +14,23 @@
                 @endforeach
               </div>
             @endif
-            <form action="{{ route('login') }}" method="POST">
+            <form action="{{ route('register') }}" method="POST">
               @csrf
               <div class="form-group">
                 <label for="email">メールアドレス</label>
                 <input type="text" class="form-control" id="email" name="email" value="{{ old('email') }}" />
               </div>
               <div class="form-group">
+                <label for="name">ユーザー名</label>
+                <input type="text" class="form-control" id="name" name="name" value="{{ old('name') }}" />
+              </div>
+              <div class="form-group">
                 <label for="password">パスワード</label>
-                <input type="password" class="form-control" id="password" name="password" />
+                <input type="password" class="form-control" id="password" name="password">
+              </div>
+              <div class="form-group">
+                <label for="password-confirm">パスワード（確認）</label>
+                <input type="password" class="form-control" id="password-confirm" name="password_confirmation">
               </div>
               <div class="text-right">
                 <button type="submit" class="btn btn-primary">送信</button>
@@ -29,16 +38,10 @@
             </form>
           </div>
         </nav>
-        <div class="text-center">
-          <a href="{{ route('password.request') }}">パスワードの変更はこちらから</a>
-        </div>
       </div>
     </div>
   </div>
 @endsection
-
-
-
 
 <!-- <html lang="ja">
 <head>
@@ -51,42 +54,30 @@
   <div class="container">
     <span class="skiplink-text">Skip to main content</span>
   </div>
-</a> -->
-<!-- 以下、ヘッダーに付ける予定のlayoutの一部 -->
-<!-- <div class="my-navbar-control">
-                @if(Auth::check())
-                <span class="my-navbar-item">{{Auth::user()->name}}</span>
-                /
-                <a href="#" id="logout" class="my-navbar-item">ログアウト</a>
-                <form id="logout-form" action="{{route('logout')}}" method="POST" style="display: none;">
-                @csrf
-                </form>
-                <script>
-                    document.getElementById('logout').addEventListener('click',function(event){
-                        event.preventDefault();
-                        document.getElementById('logout-form').submit();
-                    });
-                </script>
-                @else
-                <a class="may-navbar-item" href="{{route('login')}}">ログイン</a>
-                /
-                <a class="my-navbar-item" href="{{route('register')}}">会員情報</a>
-                @endif
-            </div> -->
-<!-- 以上、ヘッダーに付ける予定のlayoutの一部 -->
+</a>
 
-    <!-- <form class="form-signin" action="{{ route('login') }}" method="POST">
-    @csrf
-  <img class="mb-4" src="../../assets/brand/bootstrap-solid.svg" alt="" width="72" height="72">
-  <label for="inputEmail" class="sr-only">メールアドレスを入力してください</label>
-  <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required="" autofocus="">
-  <label for="inputPassword" class="sr-only">パスワードを入力してください</label>
-  <input type="password" id="inputPassword" class="form-control" placeholder="Password" required="">
-  <div class="checkbox mb-3">
-      <a> パスワードをお忘れの方はこちら</a>
-  </div>
-  <button class="login-button" type="submit">ログイン</button>
-</form> -->
+<form action="{{ route('register') }}" method="POST">
+              @csrf
+              <div class="form-group">
+                <label for="email">メールアドレス</label>
+                <input type="text" class="form-control" id="email" name="email" value="{{ old('email') }}" />
+              </div>
+              <div class="form-group">
+                <label for="name">ユーザー名</label>
+                <input type="text" class="form-control" id="name" name="name" value="{{ old('name') }}" />
+              </div>
+              <div class="form-group">
+                <label for="password">パスワード</label>
+                <input type="password" class="form-control" id="password" name="password">
+              </div>
+              <div class="form-group">
+                <label for="password-confirm">パスワード（確認）</label>
+                <input type="password" class="form-control" id="password-confirm" name="password_confirmation">
+              </div>
+              <div class="text-right">
+                <button type="submit" class="btn btn-primary">送信</button>
+              </div>
+            </form> -->
 <style>
   .login-button {
     font-weight: 400!important;
@@ -103,8 +94,8 @@
     width: 10%;
     margin: 0 auto;
 }
-<!-- </style>
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+</style>
+    <!-- <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 <script>
   window.jQuery || document.write('<script src="/docs/4.3/assets/js/vendor/jquery-slim.min.js"><\/script>')
 </script><script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script><script src="/docs/4.3/assets/js/vendor/anchor.min.js"></script>
