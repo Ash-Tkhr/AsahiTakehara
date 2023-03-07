@@ -4,6 +4,10 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use app\User;
+use app\Bookmark;
+use app\Category;
+use app\Comment;
+use app\Topic;
 
 class Article extends Model
 {
@@ -24,5 +28,20 @@ class Article extends Model
     }
     public function Bookmark(){
         return $this->hasMany('app\Bookmark');
+    }
+    public function Category1(){
+        return $this->belongsTo('app\Category','id','category1');
+    }
+    public function Category2(){
+        return $this->belongsTo('app\Category','id','category2');
+    }
+    public function Category3(){
+        return $this->belongsTo('app\Category','id','category3');
+    }
+    public function Category4(){
+        return $this->belongsTo('app\Category','id','category4');
+    }
+    public function Category5(){
+        return $this->belongsTo('app\Category','id','category5');
     }
 }

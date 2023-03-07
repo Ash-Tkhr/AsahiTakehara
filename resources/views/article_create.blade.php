@@ -44,15 +44,18 @@
   </div>
 </nav>
 
-<main role="main" class="container">
 
+<main role="main" class="container">
+@section('title', '新規投稿')
+
+@section('content')
   <div class="starter-template">
     <h1>Bootstrap starter template</h1>
   </div>
   <section>
   <div id="contact_box">
     <h2><b>記事投稿</b></h2>
-    <form action="{{ route('newarticle')}}" method="post">
+    <form action="/article_create_conf" method="post">
     @csrf
       <dl>
         <dt><label for="title"></label><span class="required">タイトル</span></dt>
