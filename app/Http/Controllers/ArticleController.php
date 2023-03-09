@@ -3,14 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Article;
-use app\Bookmark;
-use app\Category;
-use app\Comment;
-use app\User;
-use app\Topic;
+use Illuminate\Http\Request;
+use App\Bookmark;
+use App\Category;
+use App\Comment;
+use App\User;
+use App\Topic;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Http\Request;
 
 class ArticleController extends Controller
 {
@@ -31,7 +31,7 @@ class ArticleController extends Controller
      */
     public function create()
     {
-        return view('articles_create_conf');
+        return view('article.create');
     }
 
     /**
@@ -40,25 +40,33 @@ class ArticleController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(int $id,Request $request){
+    public function store(Request $request)
+    {
         $article=new Article;
         $category=new Category;
 
-        $category->name=$request->category1;
-        $category->name=$request->category2;
-        $category->name=$request->category3;
-        $category->name=$request->category4;
-        $category->name=$request->category5;
+        if(isset($request->category1)){
+            $category->name=$request->category1;
+        }
+        if(isset($request->category2)){
+            $category->name=$request->category2;
+        }        if(isset($request->category3)){
+            $category->name=$request->category3;
+        }        if(isset($request->category4)){
+            $category->name=$request->category4;
+        }        if(isset($request->category5)){
+            $category->name=$request->category5;
+        }
         $category->save();
 
         $article->title=$request->title;
         $article->text=$request->text;
         $article->user_id=Auth::id();
-        $article->category1=Category::where('name', '=', $request->category1)->first(['id']);
-        $article->category2=Category::where('name', '=', $request->category2)->first(['id']);
-        $article->category3=Category::where('name', '=', $request->category3)->first(['id']);
-        $article->category4=Category::where('name', '=', $request->category4)->first(['id']);
-        $article->category5=Category::where('name', '=', $request->category5)->first(['id']);
+        $article->category1=Category::where('name', '=', $request->category1)->first($category->id);
+        $article->category2=Category::where('name', '=', $request->category2)->first($category->id);
+        $article->category3=Category::where('name', '=', $request->category3)->first($category->id);
+        $article->category4=Category::where('name', '=', $request->category4)->first($category->id);
+        $article->category5=Category::where('name', '=', $request->category5)->first($category->id);
         $article->image=$request->image;
         $article->interest='1';
         $article->repeat='1';

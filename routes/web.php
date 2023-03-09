@@ -16,7 +16,7 @@ use App\Http\Controllers\RegistrationController;
 */
 Auth::routes();
 Route::group(['middleware'=>'auth'],function(){
-    Route::resource('articles', 'ArticleController');
+    Route::resource('/article', 'ArticleController');
     Route::get('/article',[DisplayController::class,'article'])->name('article');
     Route::get('/article_create',[DisplayController::class,'articleCreate'])->name('article.create');
     Route::get('/topics_category',[RegistrationController::class,'topicsCategory'])->name('topics.category');

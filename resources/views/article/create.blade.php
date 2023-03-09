@@ -55,7 +55,7 @@
   <section>
   <div id="contact_box">
     <h2><b>記事投稿</b></h2>
-    <form action="article" method="post">
+    <form action="{{route('article.store')}}" method="POST">
     @csrf
       <dl>
         <dt><label for="title"></label><span class="required">タイトル</span></dt>
@@ -96,10 +96,3 @@
 
 </body></html>
 
-<!DOCTYPE html>
-<html>
-
-<body>
-
-</body>
-</html>
