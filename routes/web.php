@@ -18,10 +18,11 @@ Auth::routes();
 Route::group(['middleware'=>'auth'],function(){
     Route::resource('/article', 'ArticleController');
     Route::get('/article',[DisplayController::class,'article'])->name('article');
+    Route::get('/article_create_conf',[DisplayController::class,'newArticle'])->name('article.conf');
+    Route::post('/article_create_conf',[RegistrationController::class,'newArticle'])->name('send.category');
     Route::get('/article_create',[DisplayController::class,'articleCreate'])->name('article.create');
     Route::get('/topics_category',[RegistrationController::class,'topicsCategory'])->name('topics.category');
     Route::get('/topics',[RegistrationController::class,'topics'])->name('topics');
-    // Route::post('/article_create_conf',[RegistrationController::class,'newArticle'])->name('newarticle');
     Route::get('/', [DisplayController::class,'index']);
 });
 
@@ -33,3 +34,4 @@ Route::post('/article_serch',[DisplayController::class,'articleSerch'])->name('a
 // Auth::routes();
 
 // Route::get('/home', 'HomeController@index')->name('home');
+?>

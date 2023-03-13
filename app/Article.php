@@ -30,18 +30,9 @@ class Article extends Model
         return $this->hasMany('app\Bookmark');
     }
     public function Category1(){
-        return $this->belongsTo('app\Category','id','category1');
+        return $this->belongsTo('app\Category','id','maincategory_id');
     }
     public function Category2(){
-        return $this->belongsTo('app\Category','id','category2');
-    }
-    public function Category3(){
-        return $this->belongsTo('app\Category','id','category3');
-    }
-    public function Category4(){
-        return $this->belongsTo('app\Category','id','category4');
-    }
-    public function Category5(){
-        return $this->belongsTo('app\Category','id','category5');
+        return $this->belongsTo('app\Category','id','subcategory_id');
     }
 }

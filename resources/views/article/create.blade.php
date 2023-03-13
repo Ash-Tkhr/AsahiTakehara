@@ -55,7 +55,7 @@
   <section>
   <div id="contact_box">
     <h2><b>記事投稿</b></h2>
-    <form action="{{route('article.store')}}" method="POST">
+    <form action="{{route('send.category')}}" method="post">
     @csrf
       <dl>
         <dt><label for="title"></label><span class="required">タイトル</span></dt>
@@ -63,11 +63,9 @@
           value=""></dd>
 
         <dt><label for="category">カテゴリー</label><span class="required"></span></dt>
-        <dd><input type="text" name="category1" id="category1" placeholder=""value=""></dd>
-        <dd><input type="text" name="category2" id="category2" placeholder=""value=""></dd>
-        <dd><input type="text" name="category3" id="category3" placeholder=""value=""></dd>
-        <dd><input type="text" name="category4" id="category4" placeholder=""value=""></dd>
-        <dd><input type="text" name="category5" id="category5" placeholder=""value=""></dd>
+        <dd><input type="text" name="maincategory1" id="maincategory" placeholder=""value=""></dd>
+        <dd><input type="text" name="subcategory2" id="subcategory2" placeholder=""value=""></dd>
+        <dd><input type="hidden" name="topics_id" id="topics_id" placeholder=""value=""></dd>
  
         <dt><label for="image">画像アップロード</label></dt>       
         <dd><input type="text" name="image" id="image" placeholder=""value=""></dd>
@@ -76,7 +74,7 @@
       <p><label for="text">本文<span class="text"></span></label></p>
       <dl>
       <dd><textarea name="text" id="text"></textarea></dd>
-    <dd><button type="submit" class="send" name="submit">投稿確認</button></dd>
+    <dd><button type="submit" class="send" name="submit">投稿内容確認</button></dd>
     </dl>
     </form>
   </div>

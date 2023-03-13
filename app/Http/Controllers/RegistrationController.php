@@ -3,14 +3,15 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use app\Article;
-use app\Bookmark;
-use app\Category;
-use app\Comment;
-use app\User;
-use app\Topic;
+use App\Article;
+use App\Bookmark;
+use App\Category;
+use App\Comment;
+use App\User;
+use App\Topic;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+
 
 class RegistrationController extends Controller
 {
@@ -30,35 +31,34 @@ class RegistrationController extends Controller
         ]);
     }
 
-    public function newArticle(int $id,Request $request){
+    public function newArticle(Request $request){
         $article=new Article;
         $category=new Category;
+        $datas=$request->all();  
 
-        $category->name=$request->category1;
-        $category->name=$request->category2;
-        $category->name=$request->category3;
-        $category->name=$request->category4;
-        $category->name=$request->category5;
-        $category->save($category);
-
-        $columns=['user_id','title','image','text','topics_id'];
-        $article->category1=$request->category1;
-        $article->category2=$request->category2;
-        $article->category3=$request->category3;
-        $article->category4=$request->category4;
-        $article->category5=$request->category5;
-        $article->interest='1';
-        $article->repeat='1';
-        $article->study='1';
-        $article->answer='1';
-        $article->reaction='1';
-        foreach($columns as $column){
-            $article->$column=$request->$column;
+        if(Category::where('name',$request->maincategory)->exists()){
+            $category->name=$request->maincategory;
+        }else{
+            $datas['maincategory']='';
         }
-       $article->save();
-        return redirect('article_create_conf',[
-            'article'=>$article,
-        ]);
+        if(Category::where('name',$request->subcategory)->exists()){
+            $category->name=$request->subcategory;
+        }else{
+            $datas['subcategory']='';
+        }
+
+        $category->save();
+
+
+     
+        if(empty($datas->image)){
+            $datas['image']='';
+        }
+        if(empty($datas->topics_id)){
+            $datas['topics_id']='';
+        }
+
+        return redirect()->route('article.conf', ['datas'=>$datas]);
+}
     }
     
-}

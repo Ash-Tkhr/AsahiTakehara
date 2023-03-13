@@ -34,5 +34,11 @@ class DisplayController extends Controller
 
         ]);
     }
+    public function newArticle(Request $request) {
+       
+        return view('article.create_conf',[
+            'article'=>$request->datas,
+        ]);
+    }
 }
-
+?>

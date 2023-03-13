@@ -45,36 +45,24 @@ class ArticleController extends Controller
         $article=new Article;
         $category=new Category;
 
-        if(isset($request->category1)){
-            $category->name=$request->category1;
-        }
-        if(isset($request->category2)){
-            $category->name=$request->category2;
-        }        if(isset($request->category3)){
-            $category->name=$request->category3;
-        }        if(isset($request->category4)){
-            $category->name=$request->category4;
-        }        if(isset($request->category5)){
-            $category->name=$request->category5;
-        }
-        $category->save();
-
         $article->title=$request->title;
         $article->text=$request->text;
         $article->user_id=Auth::id();
-        $article->category1=Category::where('name', '=', $request->category1)->first($category->id);
-        $article->category2=Category::where('name', '=', $request->category2)->first($category->id);
-        $article->category3=Category::where('name', '=', $request->category3)->first($category->id);
-        $article->category4=Category::where('name', '=', $request->category4)->first($category->id);
-        $article->category5=Category::where('name', '=', $request->category5)->first($category->id);
-        $article->image=$request->image;
+        if(isset($request->image)){
+            $article->image=$request->image;
+        }
         $article->interest='1';
         $article->repeat='1';
         $article->study='1';
         $article->answer='1';
         $article->reaction='1';
-        $article->topics_id='';
+        if(isset($request->topics_id)){
+            $article->topics_id=$request->topics_id;
+        }
         $article->save();
+
+
+        return redirect("/article");
     }
 
     /**
@@ -85,7 +73,7 @@ class ArticleController extends Controller
      */
     public function show(Article $article)
     {
-        //
+ 
     }
 
     /**

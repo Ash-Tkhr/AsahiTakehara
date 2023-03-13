@@ -48,19 +48,6 @@
     </nav>
   </div>
 
-  <div class="row mb-2">
-  <main role="main" class="container">
-    @isset($article)
-  <li>{{$article['title']}}</li>
-  <li>{{$article['image']}}</li>
-  <li>{{$article['category1']}}</li>
-  <li>{{$article['category2']}}</li>
-  <li>{{$article['category3']}}</li>
-  <li>{{$article['category4']}}</li>
-  <li>{{$article['category5']}}</li>
-  <li>{{$article['text']}}</li>
-@endisset
-
   <div class="jumbotron p-3 p-md-5 text-white rounded bg-dark">
     <div class="col-md-6 px-0">
       <h1 class="display-4 font-italic">選択した記事</h1>
@@ -69,40 +56,26 @@
     </div>
   </div>
 
-    <!-- 以下、テスト用のあれこれ -->
-
-<p>各カテゴリーで<a href="{{ route('article.serch') }}">個別に検索</a></p>
-<div class="ml-3">
-                        <form action="{{ route('article.serch')}}" method="post">
-                            @csrf
-                            <label for="serchword">記事検索テスト</label>
-                            <input type='text' class='form-control' name='serchword' id='serchword' value=""/>
-                                <!-- valueに"{{old('～～')}}"を入れる -->
-                        </div>
-                        <br>
-                        <div class="ml-3">
-                        <button type='submit' class='btn btn-secondary'>ブックマーク</button>
-                        </form>
-                        </div>
-                        <br>
-                        <br>
-    <!-- 上はまだルートを変更していないので、INSERT処理させる。
-    あと、ajaxで、ブックマーク登録前は「登録」ボタン、登録後は「登録解除」ボタンにする -->
-    <div class="ml-3">
-    <form action="{{ route('article.serch')}}" method="post">
-                            @csrf
-                            コメントテスト<input type='text' class='form-control' name='fromdate' id='date' value=""/>
-                                <!-- valueに"{{old('～～')}}"を入れる -->
-                                <!-- 書き込んだコメントがすぐ表示されるのもajax？ -->
-                        </div>
-                        <div class="ml-3">
-                        <button type='submit' class='btn btn-primary'>送信</button>
-                        </form>
-                        </div>
-                    </div>
-  <!-- 以上、テスト用のあれこれ -->
-
   <div class="row mb-2">
+  <main role="main" class="container">
+  <li>タイトル：{{$article['title']}}</li>
+  <li>画像：{{$article['image']}}</li>
+  <li>カテゴリー：{{$article['category1']}}</li>
+  <li>本文：{{$article['text']}}</li>
+
+<form action="{{route('article.store')}}" method="post">
+    @csrf
+      <dl>
+        <dd><input type="hidden" name="title" id="title" placeholder="" value="{{$article['title']}}"></dd>
+        <dd><input type="hidden" name="image" id="image" placeholder="" value="{{$article['image']}}"></dd>
+        <dd><input type="hidden" name="maincategory" id="maincategory" placeholder="" value="{{$article['maincategory']}}"></dd>
+        <dd><input type="hidden" name="subcategory" id="subcategory" placeholder="" value="{{$article['subcategory']}}"></dd>
+        <dd><input type="hidden" name="text" id="text" placeholder="" value="{{$article['text']}}"></dd>
+      </dl>
+      <dd><button type="submit" class="send" name="submit">投稿</button></dd>
+      </dl>
+    </form>
+
     <div class="col-md-6">
       <div class="card flex-md-row mb-4 shadow-sm h-md-250">
         <div class="card-body d-flex flex-column align-items-start">
@@ -274,3 +247,4 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="200" height="250" viewBox="0 0 200 250" preserveAspectRatio="none" style="display: none; visibility: hidden; position: absolute; top: -100%; left: -100%;"><defs><style type="text/css"></style></defs><text x="0" y="13" style="font-weight:bold;font-size:13pt;font-family:Arial, Helvetica, Open Sans, sans-serif">Thumbnail</text></svg>
 </body>
 </html>
+
