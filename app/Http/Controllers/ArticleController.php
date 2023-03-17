@@ -33,8 +33,9 @@ class ArticleController extends Controller
     {
         $category=new Category;
         return view('article.create',[
-            'maincategories'=>$category->where('type','0')->name,
-            'subcategories'=>$category->where('type','1')->name,
+            'maincategories'=>$category->where('type','0')->get(),
+            'subcategories'=>$category->where('type','1')->get(),
+            'category'=>$category,
         ]);
     }
 
@@ -48,29 +49,23 @@ class ArticleController extends Controller
     {
         $article=new Article;
         $category=new Category;
-        $datas=$request->all(); 
+        // $datas=$request->all(); 
 
         $article->title=$request->title;
         $article->text=$request->text;
         $article->user_id=Auth::id();
-        if(Category::where('name',$request->maincategory)->exists()){
-            $datas['maincategory']='';
-        }else{
-            // $datas['maincategory']=$request->maincategory;
-            $article_maincategory=Category::where('name',$request->maincategory)->all();
+        if(isset($request->maincategory)){
+            $article->maincategory_id=$request->maincategory;
         }
-        if(Category::where('name',$request->subcategory)->exists()){
-            $datas['subcategory']='';
-        }else{
-            $datas['subcategory']=$request->subcategory;
+        if(isset($request->subcategory)){
+            $article->subcategory_id=$request->subcategory;
         }
 
         $dir='picture';
-        // アップロードされたファイル名の取得
         $image = $request->file('image')->getClientOriginalName();
         $request->file('image')->storeAs('public/' . $dir,$image);
         if(isset($request->image)){
-                $article->image='strage/' . $dir . '/' . $image;
+                $article->image='storage/' . $dir . '/' . $image;
         }
         $article->interest='1';
         $article->repeat='1';
@@ -81,9 +76,12 @@ class ArticleController extends Controller
             $article->topics_id=$request->topics_id;
         }
         $article->save();
-        $id=Article::select('id')->latest('id')->first();
+        $id=Article::latest('id')->first();
 
-        return redirect()->route('article.show',['article'=>$article['id']]);
+
+        return redirect()->route('article.show',[
+            'article'=>$id,
+        ]);
     }
 
     /**
@@ -94,7 +92,10 @@ class ArticleController extends Controller
      */
     public function show(Article $article)
     {
-        return view("/article");
+        $id=Article::latest('id')->first();
+        return view("/article",[
+            'article'=>$id,
+        ]);
     }
 
     /**

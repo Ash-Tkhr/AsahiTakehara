@@ -35,4 +35,7 @@ class Article extends Model
     public function Category2(){
         return $this->belongsTo('app\Category','id','subcategory_id');
     }
+    public function BookmarkedBy($user): bool {
+        return Bookmark::where('user_id', $user->id)->where('article_id', $this->id)->first() !==null;
+    }
 }

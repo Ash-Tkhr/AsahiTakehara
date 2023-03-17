@@ -60,30 +60,28 @@
       <dl>
         <dt><label for="title"></label><span class="required">タイトル</span></dt>
         <dd><input type="text" name="title" id="title" placeholder="" value=""></dd>
-
+        
         <dt><label for="category">カテゴリー</label><span class="required"></span></dt>
-        <dd><select name='maincategory' class='maincategory' >
-                                <option value='' hidden>メインカテゴリ</option>
+        <dd><select name='maincategory' class='maincategory' placeholder=メインカテゴリー'>
+          <option  hidden></option>
                                 @foreach($maincategories as $maincategory)
-                                <option value="{{$category['id']}}">{{ $maincategory['name'] }}</option>
+                                <option value="{{$maincategory['id']}}">{{ $maincategory['name'] }}</option>
                                 @endforeach
                             </select></dd>
-        <dd><select name='subcategory' class='subcategory' >
-                                <option value='' hidden>カテゴリ</option>
+        <dd><select name='subcategory' class='subcategory' placeholder='サブカテゴリー'  >
+                                <option hidden></option>
                                 @foreach($subcategories as $subcategory)
-                                <option value="{{$category['id']}}">{{ $subcategory['name'] }}</option>
+                                <option value="{{$subcategory['id']}}">{{ $subcategory['name'] }}</option>
                                 @endforeach
                             </select></dd>
         <dd><input type="hidden" name="topics_id" id="topics_id" placeholder=""value=""></dd>
  
         <dt><label for="image">画像アップロード</label></dt>       
         <dd><input type="file" name="image" id="image" value=""></dd>
+        <dt><label for="text">本文<span class="text"></span></label></dt>
+        <dd><textarea name="text" id="text"></textarea></dd>
+        <dd><button type="submit" class="send" name="submit">投稿内容確認</button></dd>
       </dl>
-      <p><label for="text">本文<span class="text"></span></label></p>
-      <dl>
-      <dd><textarea name="text" id="text"></textarea></dd>
-    <dd><button type="submit" class="send" name="submit">投稿内容確認</button></dd>
-    </dl>
     </form>
   </div>
 </section>

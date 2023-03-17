@@ -65,5 +65,85 @@ class RegistrationController extends Controller
 
         return redirect()->route('article.conf');
 }
+public function sendComment(Request $request){
+    $comment=new Comment;
+    $comment->text=$request->comment;
+    $comment->user_id=Auth::id();
+    // 以下は仮の値。返信機能実装時に編集。
+    $comment->article_id=$request->id;
+    $comment->author='1';
+    $comment->comment_to='1';
+    $article=Article::where('id',$request->id)->first();
+    $comment->save();
+    
+    return view("/article",[
+        'article'=>$article,
+    ]);
+}
+
+public function store(Request $request)
+{
+    $article=new Article;
+    $category=new Category;
+    // $datas=$request->all(); 
+
+    $article->title=$request->title;
+    $article->text=$request->text;
+    $article->user_id=Auth::id();
+    if(isset($request->maincategory)){
+        $article->maincategory_id=$request->maincategory;
     }
+    if(isset($request->subcategory)){
+        $article->subcategory_id=$request->subcategory;
+    }
+
+    $dir='picture';
+    $image = $request->file('image')->getClientOriginalName();
+    $request->file('image')->storeAs('public/' . $dir,$image);
+    if(isset($request->image)){
+            $article->image='storage/' . $dir . '/' . $image;
+    }
+    $article->interest='1';
+    $article->repeat='1';
+    $article->study='1';
+    $article->answer='1';
+    $article->reaction='1';
+    if(isset($request->topics_id)){
+        $article->topics_id=$request->topics_id;
+    }
+    $article->save();
+    $id=Article::latest('id')->first();
+    // dd($id);
+
+
+    return redirect()->route('article.show',[
+        'article'=>$id,
+    ]);
+    }
+
+    public function bookmark(Request $request) {
+
+        $user_id = Auth::user()->id; //1.ログインユーザーのid取得
+        $review_id = $request->review_id; //2.投稿idの取得
+        $already_liked = Like::where('user_id', $user_id)->where('review_id', $review_id)->first(); //3.
+    
+        if (!$already_liked) { //もしこのユーザーがこの投稿にまだいいねしてなかったら
+            $like = new Like; //4.Likeクラスのインスタンスを作成
+            $like->review_id = $review_id; //Likeインスタンスにreview_id,user_idをセット
+            $like->user_id = $user_id;
+            $like->save();
+        } else { //もしこのユーザーがこの投稿に既にいいねしてたらdelete
+            Like::where('review_id', $review_id)->where('user_id', $user_id)->delete();
+        }
+        //5.この投稿の最新の総いいね数を取得
+        $review_likes_count = Review::withCount('likes')->findOrFail($review_id)->likes_count;
+        $param = [
+            'review_likes_count' => $review_likes_count,
+        ];
+        return response()->json($param); //6.JSONデータをjQueryに返す
+
+    }
+    }
+
+
     
