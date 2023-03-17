@@ -31,7 +31,11 @@ class ArticleController extends Controller
      */
     public function create()
     {
-        return view('article.create');
+        $category=new Category;
+        return view('article.create',[
+            'maincategories'=>$category->where('type','0')->name,
+            'subcategories'=>$category->where('type','1')->name,
+        ]);
     }
 
     /**
@@ -44,12 +48,29 @@ class ArticleController extends Controller
     {
         $article=new Article;
         $category=new Category;
+        $datas=$request->all(); 
 
         $article->title=$request->title;
         $article->text=$request->text;
         $article->user_id=Auth::id();
+        if(Category::where('name',$request->maincategory)->exists()){
+            $datas['maincategory']='';
+        }else{
+            // $datas['maincategory']=$request->maincategory;
+            $article_maincategory=Category::where('name',$request->maincategory)->all();
+        }
+        if(Category::where('name',$request->subcategory)->exists()){
+            $datas['subcategory']='';
+        }else{
+            $datas['subcategory']=$request->subcategory;
+        }
+
+        $dir='picture';
+        // アップロードされたファイル名の取得
+        $image = $request->file('image')->getClientOriginalName();
+        $request->file('image')->storeAs('public/' . $dir,$image);
         if(isset($request->image)){
-            $article->image=$request->image;
+                $article->image='strage/' . $dir . '/' . $image;
         }
         $article->interest='1';
         $article->repeat='1';
@@ -60,9 +81,9 @@ class ArticleController extends Controller
             $article->topics_id=$request->topics_id;
         }
         $article->save();
+        $id=Article::select('id')->latest('id')->first();
 
-
-        return redirect("/article");
+        return redirect()->route('article.show',['article'=>$article['id']]);
     }
 
     /**
@@ -73,7 +94,7 @@ class ArticleController extends Controller
      */
     public function show(Article $article)
     {
- 
+        return view("/article");
     }
 
     /**

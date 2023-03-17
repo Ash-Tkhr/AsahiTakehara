@@ -20,4 +20,12 @@ class User extends Authenticatable
     public function Topic(){
         return $this->hasMany('app\Topic');
     }
+    public function likes()
+    {
+        return $this->hasMany('App\Like');
+    }
+    //後でViewで使う、いいねされているかを判定するメソッド。
+    public function bookmarked($user): bool {
+        return Like::where('user_id', $user->id)->where('article_id', $this->id)->first() !==null;
+    }
 }

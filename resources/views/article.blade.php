@@ -50,16 +50,13 @@
 
   <div class="row mb-2">
   <main role="main" class="container">
-    @isset($article)
+    <!-- @isset($article)
   <li>{{$article['title']}}</li>
   <li>{{$article['image']}}</li>
-  <li>{{$article['category1']}}</li>
-  <li>{{$article['category2']}}</li>
-  <li>{{$article['category3']}}</li>
-  <li>{{$article['category4']}}</li>
-  <li>{{$article['category5']}}</li>
+  <li>{{$article['maincategory']}}</li>
+  <li>{{$article['subcategory']}}</li>
   <li>{{$article['text']}}</li>
-@endisset
+@endisset -->
 
   <div class="jumbotron p-3 p-md-5 text-white rounded bg-dark">
     <div class="col-md-6 px-0">
@@ -75,28 +72,50 @@
 <div class="ml-3">
                         <form action="{{ route('article.serch')}}" method="post">
                             @csrf
-                            <label for="serchword">記事検索テスト</label>
+                            <!-- updateの時は@outか@patchにする -->
+                            <label for="serchword">記事検索</label>
                             <input type='text' class='form-control' name='serchword' id='serchword' value=""/>
+                            <button type='submit' class='btn btn-primary'>検索</button>
+                        </form>
                                 <!-- valueに"{{old('～～')}}"を入れる -->
                         </div>
                         <br>
                         <div class="ml-3">
-                        <button type='submit' class='btn btn-secondary'>ブックマーク</button>
+                        @auth 
+                          @if (!$article->bookmarked(Auth::user()))
+                            <span class="likes">
+                                <i class="fas fa-music like-toggle" data-review-id="{{ $item->id }}"></i>
+                              <span class="like-counter">{{$item->likes_count}}</span>
+                            </span>
+                          @else
+                            <span class="likes">
+                                <i class="fas fa-music heart like-toggle liked" data-review-id="{{ $item->id }}"></i>
+                              <span class="like-counter">{{$item->likes_count}}</span>
+                            </span>
+                          @endif
+                        @endauth
+                        @guest
+                          <span class="likes">
+                              <i class="fas fa-music heart"></i>
+                            <span class="like-counter">{{$item->likes_count}}</span>
+                          </span>
+                        @endguest
+                        <form action="{{ route('Bookmark.store')}}" method="post">
+                            @csrf
+                            <label for="serchword">ブックマーク</label>
+                          <button type='submit' class='btn btn-primary'>登録</button>
                         </form>
                         </div>
                         <br>
-                        <br>
     <!-- 上はまだルートを変更していないので、INSERT処理させる。
     あと、ajaxで、ブックマーク登録前は「登録」ボタン、登録後は「登録解除」ボタンにする -->
-    <div class="ml-3">
-    <form action="{{ route('article.serch')}}" method="post">
+                        <div class="ml-3">
+                          <form action="{{ route('comment.store')}}" method="post">
                             @csrf
-                            コメントテスト<input type='text' class='form-control' name='fromdate' id='date' value=""/>
+                            コメントテスト<input type='text' class='form-control' name='comment' id='comment' value=""/>
                                 <!-- valueに"{{old('～～')}}"を入れる -->
                                 <!-- 書き込んだコメントがすぐ表示されるのもajax？ -->
-                        </div>
-                        <div class="ml-3">
-                        <button type='submit' class='btn btn-primary'>送信</button>
+                          <button type='submit' class='btn btn-primary'>送信</button>
                         </form>
                         </div>
                     </div>
@@ -274,3 +293,40 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="200" height="250" viewBox="0 0 200 250" preserveAspectRatio="none" style="display: none; visibility: hidden; position: absolute; top: -100%; left: -100%;"><defs><style type="text/css"></style></defs><text x="0" y="13" style="font-weight:bold;font-size:13pt;font-family:Arial, Helvetica, Open Sans, sans-serif">Thumbnail</text></svg>
 </body>
 </html>
+
+<style>
+  .liked {
+    color: yellow;
+  }
+    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script>
+      $(function () {
+        let like = $('.like-toggle'); //like-toggleのついたiタグを取得し代入。
+        let likeReviewId; //変数を宣言（なんでここで？）
+        like.on('click', function () { //onはイベントハンドラー
+          let $this = $(this); //this=イベントの発火した要素＝iタグを代入
+          likeReviewId = $this.data('review-id'); //iタグに仕込んだdata-review-idの値を取得
+          //ajax処理スタート
+          $.ajax({
+            headers: { //HTTPヘッダ情報をヘッダ名と値のマップで記述
+              'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content')
+            },  //↑name属性がcsrf-tokenのmetaタグのcontent属性の値を取得
+            url: '/like', //通信先アドレスで、このURLをあとでルートで設定します
+            method: 'POST', //HTTPメソッドの種別を指定します。1.9.0以前の場合はtype:を使用。
+            data: { //サーバーに送信するデータ
+              'review_id': likeReviewId //いいねされた投稿のidを送る
+            },
+          })
+          //通信成功した時の処理
+          .done(function (data) {
+            $this.toggleClass('liked'); //likedクラスのON/OFF切り替え。
+            $this.next('.like-counter').html(data.review_likes_count);
+          })
+          //通信失敗した時の処理
+          .fail(function () {
+            console.log('fail'); 
+          });
+        });
+        });
+      </script>

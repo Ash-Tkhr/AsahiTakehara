@@ -55,21 +55,29 @@
   <section>
   <div id="contact_box">
     <h2><b>記事投稿</b></h2>
-    <form action="{{route('send.category')}}" method="post">
+    <form action="{{route('article.store')}}" method="post" enctype="multipart/form-data">
     @csrf
       <dl>
         <dt><label for="title"></label><span class="required">タイトル</span></dt>
-        <dd><input type="text" name="title" id="title" placeholder="" 
-          value=""></dd>
+        <dd><input type="text" name="title" id="title" placeholder="" value=""></dd>
 
         <dt><label for="category">カテゴリー</label><span class="required"></span></dt>
-        <dd><input type="text" name="maincategory1" id="maincategory" placeholder=""value=""></dd>
-        <dd><input type="text" name="subcategory2" id="subcategory2" placeholder=""value=""></dd>
+        <dd><select name='maincategory' class='maincategory' >
+                                <option value='' hidden>メインカテゴリ</option>
+                                @foreach($maincategories as $maincategory)
+                                <option value="{{$category['id']}}">{{ $maincategory['name'] }}</option>
+                                @endforeach
+                            </select></dd>
+        <dd><select name='subcategory' class='subcategory' >
+                                <option value='' hidden>カテゴリ</option>
+                                @foreach($subcategories as $subcategory)
+                                <option value="{{$category['id']}}">{{ $subcategory['name'] }}</option>
+                                @endforeach
+                            </select></dd>
         <dd><input type="hidden" name="topics_id" id="topics_id" placeholder=""value=""></dd>
  
         <dt><label for="image">画像アップロード</label></dt>       
-        <dd><input type="text" name="image" id="image" placeholder=""value=""></dd>
-
+        <dd><input type="file" name="image" id="image" value=""></dd>
       </dl>
       <p><label for="text">本文<span class="text"></span></label></p>
       <dl>

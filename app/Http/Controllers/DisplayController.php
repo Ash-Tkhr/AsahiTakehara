@@ -21,24 +21,15 @@ class DisplayController extends Controller
     }
     public function article() {
         return view('article',[
-
+            'article'=>$article,
         ]);
     }
     public function articleSerch() {
-        return view('article_serch',[
-
-        ]);
-    }
-    public function articleCreate() {
-        return view('article_create',[
-
-        ]);
+        return view('article_serch');
     }
     public function newArticle(Request $request) {
        
-        return view('article.create_conf',[
-            'article'=>$request->datas,
-        ]);
+        return view('article/create_conf');
     }
 }
 ?>

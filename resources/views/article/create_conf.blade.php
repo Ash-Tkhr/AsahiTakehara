@@ -58,19 +58,20 @@
 
   <div class="row mb-2">
   <main role="main" class="container">
-  <li>タイトル：{{$article['title']}}</li>
-  <li>画像：{{$article['image']}}</li>
-  <li>カテゴリー：{{$article['category1']}}</li>
-  <li>本文：{{$article['text']}}</li>
+  <li>タイトル：{{$datas['title']}}</li>
+  <li>画像：{{$datas['image']}}</li>
+  <li>カテゴリー：{{$datas['maincategory']}}</li>
+  <li>カテゴリー：{{$datas['subcategory']}}</li>
+  <li>本文：{{$datas['text']}}</li>
 
-<form action="{{route('article.store')}}" method="post">
+    <form action="{{route('article.store')}}" method="post">
     @csrf
       <dl>
-        <dd><input type="hidden" name="title" id="title" placeholder="" value="{{$article['title']}}"></dd>
-        <dd><input type="hidden" name="image" id="image" placeholder="" value="{{$article['image']}}"></dd>
-        <dd><input type="hidden" name="maincategory" id="maincategory" placeholder="" value="{{$article['maincategory']}}"></dd>
-        <dd><input type="hidden" name="subcategory" id="subcategory" placeholder="" value="{{$article['subcategory']}}"></dd>
-        <dd><input type="hidden" name="text" id="text" placeholder="" value="{{$article['text']}}"></dd>
+        <dd><input type="hidden" name="title" id="title" placeholder="" value="{{$datas['title']}}"></dd>
+        <dd><input type="hidden" name="image" id="image" placeholder="" value="{{$datas['image']}}"></dd>
+        <dd><input type="hidden" name="maincategory" id="maincategory" placeholder="" value="{{$datas['maincategory']}}"></dd>
+        <dd><input type="hidden" name="subcategory" id="subcategory" placeholder="" value="{{$datas['subcategory']}}"></dd>
+        <dd><input type="hidden" name="text" id="text" placeholder="" value="{{$datas['text']}}"></dd>
       </dl>
       <dd><button type="submit" class="send" name="submit">投稿</button></dd>
       </dl>

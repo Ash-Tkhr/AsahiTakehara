@@ -35,30 +35,35 @@ class RegistrationController extends Controller
         $article=new Article;
         $category=new Category;
         $datas=$request->all();  
-
         if(Category::where('name',$request->maincategory)->exists()){
-            $category->name=$request->maincategory;
-        }else{
             $datas['maincategory']='';
+        }else{
+            $datas['maincategory']=$request->maincategory;
         }
         if(Category::where('name',$request->subcategory)->exists()){
-            $category->name=$request->subcategory;
-        }else{
             $datas['subcategory']='';
+        }else{
+            $datas['subcategory']=$request->subcategory;
         }
+        
+        $dir='picture';
+        // アップロードされたファイル名の取得
+        $image = $request->file('image')->getClientOriginalName();
+         // name属性が'image'のinputタグをファイル形式に、画像をpublic/avatarに保存
+        $request->file('image')->storeAs('public/' . $dir,$image);
+         // 上記処理にて保存した画像に名前を付け、articleテーブルのimageカラムに、格納 
 
-        $category->save();
-
-
-     
         if(empty($datas->image)){
             $datas['image']='';
+        }else{
+            $datas['image'] = basename($image_path);
         }
         if(empty($datas->topics_id)){
             $datas['topics_id']='';
         }
+        $category->save();
 
-        return redirect()->route('article.conf', ['datas'=>$datas]);
+        return redirect()->route('article.conf');
 }
     }
     
