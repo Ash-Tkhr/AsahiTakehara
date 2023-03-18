@@ -49,8 +49,7 @@ class ArticleController extends Controller
     {
         $article=new Article;
         $category=new Category;
-        // $datas=$request->all(); 
-
+ 
         $article->title=$request->title;
         $article->text=$request->text;
         $article->user_id=Auth::id();
@@ -90,11 +89,11 @@ class ArticleController extends Controller
      * @param  \App\Article  $article
      * @return \Illuminate\Http\Response
      */
-    public function show(Article $article)
+    public function show(Article $article,Request $request)
     {
-        $id=Article::latest('id')->first();
+        $article=Article::where('id',$article->id)->first();
         return view("/article",[
-            'article'=>$id,
+            'article'=>$article,
         ]);
     }
 
@@ -131,4 +130,30 @@ class ArticleController extends Controller
     {
         //
     }
+    public function bookmark(Request $request) {
+
+        $user_id = Auth::user()->id; //1.ログインユーザーのid取得
+        $article_id = $request->article_id; //2.投稿idの取得
+        $already_bookmarked = Bookmark::where('user_id', $user_id)->where('article_id', $article_id)->first(); //3.
+    
+        if (!$already_bookmarked) { //もしこのユーザーがこの投稿にまだいいねしてなかったら
+            $bookmark = new Bookmark; //4.bookmarkクラスのインスタンスを作成
+            $bookmark->article_id = $article_id; //bookmarkインスタンスにarticle_id,user_idをセット
+            $bookmark->user_id = $user_id;
+            $bookmark->save();
+        } else { //もしこのユーザーがこの投稿に既にいいねしてたらdelete
+            bookmark::where('article_id', $article_id)->where('user_id', $user_id)->delete();
+        }
+        //5.この投稿の最新の総いいね数を取得
+        $article_bookmarks_count = Article::withCount('bookmarks')->findOrFail($article_id)->bookmarks_count;
+        $param = [
+            'article_bookmarks_count' => $article_bookmarks_count,
+        ];
+        return response()->json($param); //6.JSONデータをjQueryに返す
+
+        }
 }
+        // $maincategory_id=Category::where('id',$article->maincategory_id)->get();
+        // $maincategory=$maincategory_id->name;
+        // $subcategory_id=Category::where('id',$article->subcategory_id)->get();
+        // $subcategory=$subcategory_id->name;

@@ -19,7 +19,7 @@ Route::group(['middleware'=>'auth'],function(){
     Route::resource('/article', 'ArticleController');
     Route::resource('comment', 'CommentController');
     Route::resource('Bookmark', 'BookmarkController');
-    Route::get('/', [DisplayController::class,'index']);
+    Route::get('/', [DisplayController::class,'index'])->name('article.index');
     Route::get('/article',[DisplayController::class,'article'])->name('article');
     Route::get('/article/create_conf',[DisplayController::class,'newArticle'])->name('article.conf');
     Route::post('/article/create',[RegistrationController::class,'store'])->name('article.store');
@@ -27,10 +27,10 @@ Route::group(['middleware'=>'auth'],function(){
     Route::get('/topics',[RegistrationController::class,'topics'])->name('topics');
     Route::post('article/comment',[RegistrationController::class,'sendComment'])->name('send.comment');
     Route::post('/bookmark',[RegistrationController::class,'bookmark'])->name('article.bookmark');
+    Route::get('/article_search',[DisplayController::class,'articleSearch'])->name('article.search');
 });
 
-Route::get('/article_serch',[DisplayController::class,'articleSerch'])->name('article.serch');
-Route::post('/article_serch',[DisplayController::class,'articleSerch'])->name('article.serch');
+
 // Route::post('/serch',[DisplayController::class,'serch'])->name('');
 // Route::get('/select_spend',[RegistrationController::class,'selectSpend'])->name('');
 

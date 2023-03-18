@@ -73,10 +73,10 @@ public function sendComment(Request $request){
     $comment->article_id=$request->id;
     $comment->author='1';
     $comment->comment_to='1';
-    $article=Article::where('id',$request->id)->first();
     $comment->save();
-    
-    return view("/article",[
+    $article=Article::where('id',$request->id)->first();
+
+    return view("article",[
         'article'=>$article,
     ]);
 }
@@ -131,18 +131,17 @@ public function store(Request $request)
             $bookmark = new Bookmark; //4.bookmarkクラスのインスタンスを作成
             $bookmark->article_id = $article_id; //bookmarkインスタンスにarticle_id,user_idをセット
             $bookmark->user_id = $user_id;
+            $bookmark->chaining =1;
+            $bookmark->del_flg =0;
             $bookmark->save();
         } else { //もしこのユーザーがこの投稿に既にいいねしてたらdelete
-            bookmark::where('article_id', $article_id)->where('user_id', $user_id)->delete();
+            Bookmark::where('article_id', $article_id)->where('user_id', $user_id)->delete();
         }
-        //5.この投稿の最新の総いいね数を取得
-        $article_bookmarks_count = Article::withCount('bookmarks')->findOrFail($article_id)->bookmarks_count;
-        $param = [
-            'article_bookmarks_count' => $article_bookmarks_count,
-        ];
-        return response()->json($param); //6.JSONデータをjQueryに返す
 
-    }
+
+        return response()->json('ok'); //6.JSONデータをjQueryに返す
+
+        }
     }
 
 

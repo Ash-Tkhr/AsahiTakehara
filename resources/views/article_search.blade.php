@@ -69,7 +69,12 @@ error_reporting(E_ALL);
   <!-- 以下、テスト用のあれこれ -->
   @csrf
   <h1>の検索結果</h1>
- 
+  @foreach($articles as $article)
+    <a href="{{ route('article.show',$article->id) }}">
+        {{ $article->title }}
+    </a>
+    </br>
+@endforeach 
     <p>記事を<a href="{{ route('article') }}">選択</a></p>
   <!-- 以上、テスト用のあれこれ -->
 

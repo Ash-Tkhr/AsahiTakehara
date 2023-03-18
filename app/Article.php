@@ -3,11 +3,11 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use app\User;
-use app\Bookmark;
-use app\Category;
-use app\Comment;
-use app\Topic;
+use App\User;
+use App\Bookmark;
+use App\Category;
+use App\Comment;
+use App\Topic;
 
 class Article extends Model
 {
@@ -35,7 +35,7 @@ class Article extends Model
     public function Category2(){
         return $this->belongsTo('app\Category','id','subcategory_id');
     }
-    public function BookmarkedBy($user): bool {
+    public function Bookmarked($user): bool {
         return Bookmark::where('user_id', $user->id)->where('article_id', $this->id)->first() !==null;
     }
 }

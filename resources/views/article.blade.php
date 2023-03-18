@@ -4,6 +4,9 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <link href="blog.css" rel="stylesheet">
     <script src="{{ asset('js/bookmark.js') }}" defer></script>
+<script src="https://kit.fontawesome.com/67fc42cf07.js" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://kit.fontawesome.com/67fc42cf07.css" crossorigin="anonymous">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
   </head>
 
   
@@ -69,40 +72,46 @@
 
     <!-- 以下、テスト用のあれこれ -->
 
-<p>各カテゴリーで<a href="{{ route('article.serch') }}">個別に検索</a></p>
+<p>各カテゴリーで<a href="{{ route('article.search') }}">個別に検索</a></p>
 <div class="ml-3">
-                        <form action="{{ route('article.serch')}}" method="post">
+<div class="row justify-content-around">
+                        <form action="{{ route('article.search')}}" method="get">
                             @csrf
-                            <!-- updateの時は@outか@patchにする -->
-                            <label for="serchword">記事検索</label>
-                            <input type='text' class='form-control' name='serchword' id='serchword' value=""/>
-                            <button type='submit' class='btn btn-primary'>検索</button>
+                          <label for="searchword">記事検索</label>
+                          <input type='search' class='searchword' name='searchword' id='searchword' value="@if (isset($search)) {{ $search }} @endif"/>
+                              <!-- valueに"{{old('～～')}}"を入れる -->
+                          <div class="ml-3">
+                          <button type='submit' class='btn btn-primary'>検索</button>
+                          <button>
+                          <a href="{{ route('article.search') }}" class="text-white">
+                              クリア
+                          </a>
+                          </button>
+                          </div>
                         </form>
-                                <!-- valueに"{{old('～～')}}"を入れる -->
-                        </div>
+                    </div>
                         <br>
 
                         @auth 
                           @if (!$article->bookmarked(Auth::user()))
                             <span class="bookmarks">
-                                <i class="fas fa-music bookmark-toggle" data-article-id="{{ $blog->id }}"></i>
-                              <span class="bookmark-counter">{{$blog->bookmark}}</span>
+                            <i class="fa-regular fa-star fa-lg bookmark-toggle" data-article-id="{{ $article->id }}">ブックマークする</i>
+                              <!-- <span class="bookmark-counter">{{$article->bookmark}}</span> -->
                             </span>
                           @else
                             <span class="bookmarks">
-                                <i class="fas fa-music heart like-toggle liked" data-review-id="{{ $blog->id }}"></i>
-                              <span class="bookmark-counter">{{$blog->bookmark}}</span>
+                            <i class="fa-regular fa-star fa-lg bookmark-toggle bookmarked" data-review-id="{{ $article->id }}">ブックマークする</i>
+                              <!-- <span class="bookmark-counter">{{$article->bookmark}}</span> -->
                             </span>
                           @endif
                         @endauth
-
                         <br>
-    <!-- 上はまだルートを変更していないので、INSERT処理させる。
-    あと、ajaxで、ブックマーク登録前は「登録」ボタン、登録後は「登録解除」ボタンにする -->
+                        <br>
+                        <br>
                         <div class="ml-3">
                           <form action="{{ route('send.comment',['comment'=>$article['id']])}}" method="post">
                             @csrf
-                            コメントテスト<input type='text' class='form-control' name='comment' id='comment' value=""/>
+                            コメント<input type='text' class='form-control' name='comment' id='comment' value=""/>
                             <input type='hidden' class='form-control' name='id' id='id' value="{{$article['id']}}"/>
                                 <!-- 書き込んだコメントがすぐ表示されるのもajax？ -->
                           <button type='submit' class='btn btn-primary'>送信</button>
@@ -285,7 +294,12 @@
 </html>
 
 <style>
-  .liked {
+  /* .bookmarks::before {
+  font-family: "Font Awesome 5 Free";
+  font-weight: 900;
+  content: "\f001";
+} */
+  .bookmarked {
     color: yellow;
   }
     </style>

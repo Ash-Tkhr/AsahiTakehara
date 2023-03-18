@@ -18,20 +18,20 @@
 
   <!-- 以下、テスト用のあれこれ -->
   <div class="row justify-content-around">
-                        <div class="ml-3">
-                        <form action="{{ route('article.serch')}}" method="post">
+                        <form action="{{ route('article.search')}}" method="get">
                             @csrf
-                            <label for="serchword">記事検索テスト</label>
-                            <input type='text' class='form-control' name='serchword' id='serchword' value=""/>
-                                <!-- valueに"{{old('～～')}}"を入れる -->
-                        </div>
-                        <?php
-                            $_SESSION['serchword'] = htmlspecialchars(isset($_POST['serchword']), ENT_QUOTES, "UTF-8");
-                        ?>
-                        <div class="ml-3">
-                        <button type='submit' class='btn btn-primary'>検索</button>
+                          <label for="searchword">記事検索</label>
+                          <input type='search' class='searchword' name='searchword' id='searchword' value="@if (isset($search)) {{ $search }} @endif"/>
+                              <!-- valueに"{{old('～～')}}"を入れる -->
+                          <div class="ml-3">
+                          <button type='submit' class='btn btn-primary'>検索</button>
+                          <button>
+                          <a href="{{ route('article.search') }}" class="text-white">
+                              クリア
+                          </a>
+                          </button>
+                          </div>
                         </form>
-                        </div>
                     </div>
                         <div class="ml-3">
                 各トピックスカテゴリーの一覧を
