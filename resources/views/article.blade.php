@@ -4,8 +4,8 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <link href="blog.css" rel="stylesheet">
     <script src="{{ asset('js/bookmark.js') }}" defer></script>
-<script src="https://kit.fontawesome.com/67fc42cf07.js" crossorigin="anonymous"></script>
-<link rel="stylesheet" href="https://kit.fontawesome.com/67fc42cf07.css" crossorigin="anonymous">
+    <script src="https://kit.fontawesome.com/67fc42cf07.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://kit.fontawesome.com/67fc42cf07.css" crossorigin="anonymous">
     <meta name="csrf-token" content="{{ csrf_token() }}">
   </head>
 

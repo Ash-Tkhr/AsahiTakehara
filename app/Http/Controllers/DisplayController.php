@@ -39,7 +39,7 @@ class DisplayController extends Controller
             $wordArraySearched = preg_split('/[\s,]+/', $spaceConversion, -1, PREG_SPLIT_NO_EMPTY);
             // 単語をループで回し、ユーザーネームと部分一致するものがあれば、$queryとして保持される
             foreach($wordArraySearched as $value) {
-                $query->where('title', 'like', '%'.$value.'%');
+                $query->where('title', 'like', '%'.$value.'%')->orWhere('title', 'like', '%'.$value.'%');
             }
             // 上記で取得した$queryをページネートにし、変数$usersに代入
             $articles = $query->paginate(20);

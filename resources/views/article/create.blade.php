@@ -2,8 +2,12 @@
     <title>Astreet</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <link href="starter-template.css" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/67fc42cf07.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://kit.fontawesome.com/67fc42cf07.css" crossorigin="anonymous">
     <meta charset="UTF-8">
   </head>
+
+
   <body>
     <a id="skippy" class="sr-only sr-only-focusable" href="#content">
   <div class="container">
@@ -37,9 +41,13 @@
         </div>
       </li>
     </ul>
-    <form class="form-inline my-2 my-lg-0">
-      <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
-      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+    <form class="form-inline my-2 my-lg-0" action="{{ route('article.search')}}" method="get">
+      <input class="form-control mr-sm-2" type="search" placeholder="検索" aria-label="Search">
+      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">
+        <span class="search">
+        <i class="fa-regular fa-magnifying-glass"></i>
+        </span>
+      </button>
     </form>
   </div>
 </nav>

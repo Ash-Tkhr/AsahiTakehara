@@ -24,7 +24,7 @@ Route::group(['middleware'=>'auth'],function(){
     Route::get('/article/create_conf',[DisplayController::class,'newArticle'])->name('article.conf');
     Route::post('/article/create',[RegistrationController::class,'store'])->name('article.store');
     Route::get('/topics_category',[RegistrationController::class,'topicsCategory'])->name('topics.category');
-    Route::get('/topics',[RegistrationController::class,'topics'])->name('topics');
+    Route::get('/topics',[DisplayController::class,'topics'])->name('topics');
     Route::post('article/comment',[RegistrationController::class,'sendComment'])->name('send.comment');
     Route::post('/bookmark',[RegistrationController::class,'bookmark'])->name('article.bookmark');
     Route::get('/article_search',[DisplayController::class,'articleSearch'])->name('article.search');
