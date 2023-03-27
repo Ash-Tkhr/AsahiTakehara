@@ -20,26 +20,15 @@
                           </ul>
                         </div>
                         @endif
-                        @foreach($comments as $comment)
-                        <p>{{$comment['text']}}</p>
-                        @endforeach
       <dl>
         <dt><label for="title"></label><span class="required">ユーザー名</span></dt>
-        <dd><input type="text" name="name" id="name" placeholder="" value="{{$user['name']}}"></dd>
+        <dd><input type="text" name="name" id="name" class="form-control"placeholder="" value="{{$user['name']}}"></dd>
         <dt><label for="image">アイコン画像</label></dt>       
         <dd><input type="file" name="image" id="image" value="{{asset($user->image)}}"></dd>
         <dt><label for="profile">自己紹介<span class="profile"></span></label></dt>
         <dd><textarea name="profile" id="profile">{{$user['profile']}}</textarea></dd>
-        @if($errors->any())
-    <div class='alert alert-danger'>
-      <ul>
-        @foreach($errors->all() as $message)
-        <li>{{$message}}</li>
-        @endforeach
-      </ul>
-    </div>
-      @endif
-        <dd><button type="submit" class="send" name="submit">更新</button></dd>
+
+        <dd><button type="submit" class="send btn btn-sm btn-outline-primary" name="submit">更新</button></dd>
       </dl>
     </form>
   </div>

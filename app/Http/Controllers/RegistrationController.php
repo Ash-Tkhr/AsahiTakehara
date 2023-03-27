@@ -11,6 +11,8 @@ use App\User;
 use App\Topic;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\CreateData;
+use App\Http\Controllers\CreateComment;
 
 
 class RegistrationController extends Controller
@@ -31,7 +33,7 @@ class RegistrationController extends Controller
         ]);
     }
 
-    public function newArticle(Request $request){
+    public function newArticle(CreateData $request){
         $article=new Article;
         $category=new Category;
         $datas=$request->all();  
@@ -65,23 +67,24 @@ class RegistrationController extends Controller
 
         return redirect()->route('article.conf');
 }
-public function sendComment(Request $request){
+public function sendComment(CreateComment $request){
     $comment=new Comment;
     $comment->text=$request->comment;
     $comment->user_id=Auth::id();
-    // 以下は仮の値。返信機能実装時に編集。
     $comment->article_id=$request->id;
+    // 以下は仮の値。返信機能実装時に編集。
     $comment->author='1';
-    $comment->comment_to='1';
+    $comment->comment_to='0';
     $comment->save();
     $article=Article::where('id',$request->id)->first();
-
-    return view("article",[
+    $comment=Comment::where('article_id',$article->id)->get();
+    return view("/article",[
         'article'=>$article,
+        'comments'=>$comment,
     ]);
 }
 
-public function store(Request $request)
+public function store(CreateData $request)
 {
     $article=new Article;
     $category=new Category;
@@ -97,10 +100,10 @@ public function store(Request $request)
         $article->subcategory_id=$request->subcategory;
     }
 
-    $dir='picture';
-    $image = $request->file('image')->getClientOriginalName();
-    $request->file('image')->storeAs('public/' . $dir,$image);
     if(isset($request->image)){
+        $dir='picture';
+        $image = $request->file('image')->getClientOriginalName();
+        $request->file('image')->storeAs('public/' . $dir,$image);
             $article->image='storage/' . $dir . '/' . $image;
     }
     $article->interest='1';

@@ -15,16 +15,23 @@ use Illuminate\Support\Facades\Auth;
 class DisplayController extends Controller
 {
     public function index(Request $request) {
-        return view('top',[
+        $user=Auth::user();
+        $topics=Topic::get();
 
+        return view('top',[
+            'user'=>$user,
+            'topics'=>$topics,
         ]);
     }
     public function article() {
+        $user=Auth::user();
         return view('article',[
             'article'=>$article,
+            'user'=>$user,
         ]);
     }
     public function articleSearch(Request $request) {
+        $user=Auth::user();
         // ユーザー一覧をページネートで取得
         $articles = Article::paginate(20);
         // 検索フォームで入力された値を取得する
@@ -39,7 +46,7 @@ class DisplayController extends Controller
             $wordArraySearched = preg_split('/[\s,]+/', $spaceConversion, -1, PREG_SPLIT_NO_EMPTY);
             // 単語をループで回し、ユーザーネームと部分一致するものがあれば、$queryとして保持される
             foreach($wordArraySearched as $value) {
-                $query->where('title', 'like', '%'.$value.'%')->orWhere('title', 'like', '%'.$value.'%');
+                $query->where('title', 'like', '%'.$value.'%')->orWhere('text', 'like', '%'.$value.'%');
             }
             // 上記で取得した$queryをページネートにし、変数$usersに代入
             $articles = $query->paginate(20);
@@ -49,11 +56,87 @@ class DisplayController extends Controller
             ->with([
                 'articles' => $articles,
                 'search' => $search,
+                'user'=>$user,
             ]);
     }
     public function newArticle(Request $request) {
        
         return view('article/create_conf');
+    }
+    public function topics(Request $request) {
+        $user=Auth::user();
+        return view('topics',[
+            'article'=>$article,
+            'user'=>$user,
+        ]);
+    }
+    public function owner() {
+        $user=Auth::user();
+        $topics=Topic::get();
+
+        if(isset($topics)){
+            $topic=$topics;
+        }else{
+            $topic='';
+        }
+        return view("ownerpage",[
+            'topics'=>$topic,
+            'user'=>$user,
+        ]);
+    }
+    public function articleList(Request $request) {
+        $user=Auth::user();
+        // ユーザー一覧をページネートで取得
+        $articles = Article::paginate(20);
+        // 検索フォームで入力された値を取得する
+        $search=$request->input('searchword');
+        // クエリビルダ
+        $query = Article::query();
+       // もし検索フォームにキーワードが入力されたら
+        if ($search) {
+            // 全角スペースを半角に変換
+            $spaceConversion = mb_convert_kana($search, 's');
+            // 単語を半角スペースで区切り、配列にする（例："山田 翔" → ["山田", "翔"]）
+            $wordArraySearched = preg_split('/[\s,]+/', $spaceConversion, -1, PREG_SPLIT_NO_EMPTY);
+            // 単語をループで回し、ユーザーネームと部分一致するものがあれば、$queryとして保持される
+            foreach($wordArraySearched as $value) {
+                $query->where('title', 'like', '%'.$value.'%')->orWhere('text', 'like', '%'.$value.'%');
+            }
+            // 上記で取得した$queryをページネートにし、変数$usersに代入
+            $articles = $query->paginate(20);
+        }
+
+        $user=Auth::user();
+        // セレクトボックスで選択した値
+        $select = $request->sort;
+
+        // セレクトボックスの値に応じてソート
+        switch ($select) {
+            case '1':
+                //「指定なし」はID順
+                $items=Article::get();
+                break;
+            case '2':
+                // 「価格が低い順」でソート
+                $items =Article::orderBy('created_at', 'asc')->get();
+                break;
+            case '3':
+                // 「価格が高い順」でソート
+                $items=Article::orderBy('created_at', 'desc')->get();
+                break;
+            default :
+                // デフォルトはID順
+                $items=Article::get();
+                break;
+        }
+        // ビューにusersとsearchを変数として渡す
+        return view('article.list')
+            ->with([
+                'articles' => $articles,
+                'search' => $search,
+                'user'=>$user,
+                'select'=>$select,
+            ]);
     }
 }
 ?>

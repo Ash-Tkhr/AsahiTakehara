@@ -31,11 +31,13 @@ class ArticleController extends Controller
      */
     public function create()
     {
+        $user=Auth::user();
         $category=new Category;
         return view('article.create',[
             'maincategories'=>$category->where('type','0')->get(),
             'subcategories'=>$category->where('type','1')->get(),
             'category'=>$category,
+            'user'=>$user,
         ]);
     }
 
@@ -45,11 +47,12 @@ class ArticleController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CreateData $request)
     {
         $article=new Article;
         $category=new Category;
- 
+
+        $user=Auth::user();
         $article->title=$request->title;
         $article->text=$request->text;
         $article->user_id=Auth::id();
@@ -60,11 +63,11 @@ class ArticleController extends Controller
             $article->subcategory_id=$request->subcategory;
         }
 
-        $dir='picture';
-        $image = $request->file('image')->getClientOriginalName();
-        $request->file('image')->storeAs('public/' . $dir,$image);
         if(isset($request->image)){
-                $article->image='storage/' . $dir . '/' . $image;
+            $dir='picture';
+            $image = $request->file('image')->getClientOriginalName();
+            $request->file('image')->storeAs('public/' . $dir,$image);
+            $article->image='storage/' . $dir . '/' . $image;
         }
         $article->interest='1';
         $article->repeat='1';
@@ -80,6 +83,7 @@ class ArticleController extends Controller
 
         return redirect()->route('article.show',[
             'article'=>$id,
+            'user'=>$user,
         ]);
     }
 
@@ -92,8 +96,26 @@ class ArticleController extends Controller
     public function show(Article $article,Request $request)
     {
         $article=Article::where('id',$article->id)->first();
-        return view("/article",[
+        $maincategory=Category::Join('articles', 'categories.id', '=', 'articles.maincategory_id')
+                            ->where('articles.id',$article->id)
+                            ->first();
+
+        $subcategory=Category::Join('articles', 'categories.id', '=', 'articles.subcategory_id')
+                            ->where('articles.id',$article->id)
+                            ->first();
+
+        $comment=Comment::Join('users', 'comments.user_id', '=', 'users.id')
+                            ->where('article_id',$article->id)
+                            ->select('users.name','comments.text','comments.created_at')
+                            ->get();
+
+        $user=Auth::user();
+        return view("article",[
             'article'=>$article,
+            'comments'=>$comment,
+            'user'=>$user,
+            'maincategory'=>$maincategory,
+            'subcategory'=>$subcategory,
         ]);
     }
 
@@ -103,9 +125,28 @@ class ArticleController extends Controller
      * @param  \App\Article  $article
      * @return \Illuminate\Http\Response
      */
-    public function edit(Article $article)
+    public function edit(Article $article,Request $request)
     {
-        //
+        $user=new User;
+        $category=new Category;
+        $article=Article::where('id',$article->id)->first();
+        $user=Auth::user();
+        $maincategory=Category::Join('articles', 'categories.id', '=', 'articles.maincategory_id')
+        ->where('articles.id',$article->id)
+        ->select('categories.name')
+        ->first();
+        $subcategory=Category::Join('articles', 'categories.id', '=', 'articles.subcategory_id')
+                ->where('articles.id',$article->id)
+                ->select('categories.name')
+                ->first();
+        return view('article/edit',[
+            'article'=>$article,
+            'user'=>$user,
+            'maincategories'=>$category->where('type','0')->get(),
+            'subcategories'=>$category->where('type','1')->get(),
+            'maincategory'=>$maincategory,
+            'subcategory'=>$subcategory,
+        ]);
     }
 
     /**
@@ -115,9 +156,40 @@ class ArticleController extends Controller
      * @param  \App\Article  $article
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Article $article)
+    public function update(CreateData $request, Article $article)
     {
-        //
+        $user=Auth::user();
+        $article->title=$request->title;
+        $article->text=$request->text;
+        $article->user_id=Auth::id();
+        if(isset($request->maincategory)){
+            $article->maincategory_id=$request->maincategory;
+        }
+        if(isset($request->subcategory)){
+            $article->subcategory_id=$request->subcategory;
+        }
+
+        if(isset($request->image)){
+            $dir='picture';
+            $image = $request->file('image')->getClientOriginalName();
+            $request->file('image')->storeAs('public/' . $dir,$image);
+            $article->image='storage/' . $dir . '/' . $image;
+        }
+        $article->interest='1';
+        $article->repeat='1';
+        $article->study='1';
+        $article->answer='1';
+        $article->reaction='1';
+        if(isset($request->topics_id)){
+            $article->topics_id=$request->topics_id;
+        }
+        $article->save();
+        $id=Article::latest('id')->first();
+
+        return redirect()->route('article.show',[
+            'article'=>$id,
+            'user'=>$user,
+        ]);
     }
 
     /**
@@ -126,9 +198,10 @@ class ArticleController extends Controller
      * @param  \App\Article  $article
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Article $article)
+    public function destroy(Article $article,User $mypage)
     {
-        //
+        $article->delete();
+        return redirect(route('mypage.show', Auth::id()))->with('success', 'ブログ記事を削除しました');
     }
     public function bookmark(Request $request) {
 

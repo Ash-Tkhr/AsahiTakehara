@@ -1,71 +1,69 @@
-<html lang="ja">
 @extends('layout')
 
 @section('content')
-
 <main role="main">
-@can ('admin_only')
+
   <section class="jumbotron text-center">
     <div class="container">
       <h1 class="jumbotron-heading">Astreet</h1>
       <p class="lead text-muted">スポーツ、格闘技、武道、トレーニングなどの様々な情報が交わるポータルサイト</p>
+      <p>
+        <a href="#" class="btn btn-primary my-2">Main call to action</a>
+        <a href="#" class="btn btn-secondary my-2">Secondary action</a>
+      </p>
     </div>
   </section>
 
   <!-- 以下、テスト用のあれこれ -->
-  <p>トピックを<a href="{{ route('topic.create') }}">投稿</a></p>
-  <p>トピックの<a href="{{ route('owner') }}">一覧</a></p>
+  @csrf
+  <h1>「{{$search}}」の検索結果</h1>
+  <div>
+                    <form class="form-inline my-2 my-lg-0" action="{{ route('article.search')}}" method="get">
+                        <input class="form-control mr-sm-2" type="search" placeholder="検索" aria-label="Search" name="searchword">
+                        </div>
+                        <div>
+                        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">
+                            <span class="search">
+                            <i class="fas fa-search pr-1"></i>
+                            </span>
+                        </button>
+                    </form>
+                </div>
+  @foreach($articles as $article)
+  <form action="{{route('article.list')}}" id="form">
+        <select name="sort" id="sort">
+            <option value="1" {{ $select == '1' ? 'selected': '' }}>指定なし</option>
+            <option value="2" {{ $select == '2' ? 'selected': '' }}>価格が低い順</option>
+            <option value="3" {{ $select == '3' ? 'selected': '' }}>価格が高い順</option>
+        </select>
+    </form>
+<div class="col-md-4">
+      <a href="{{ route('article.show',$article->id) }}">
+          <div class="card mb-4 shadow-sm">
+            <img class="card-img-top" 
+            data-src="holder.js/100px225?theme=thumb&amp;bg=55595c&amp;fg=eceeef&amp;text=Thumbnail" 
+            alt="Thumbnail [100%x225]" style="height: 225px; width: 100%; display: block;" 
+            src="{{ $article->image}}" data-holder-rendered="true">
+            <div class="card-body">
+              <p class="card-text">{{ $article->title }}</p>
+              <small>{{$article->created_at}}</small>
+              <div class="d-flex justify-content-between align-items-center">
+                <small class="text-muted">9 mins</small>
+              </div>
+            </div>
+          </div>
+          </a>
+        </div>
+    </br>
+@endforeach 
 
   <!-- 以上、テスト用のあれこれ -->
 
   <div class="album py-5 bg-light">
     <div class="container">
-    <div class="row justify-content-around">
-  @foreach($topics as $topic)
-        <div class="col-md-4">
-            <div class="card mb-4 shadow-sm">
-                <a href="{{ route('topic.show',$topic->id) }}">
-                    <img class="card-img-top" 
-                    data-src="holder.js/100px225?theme=thumb&amp;bg=55595c&amp;fg=eceeef&amp;text=Thumbnail" 
-                    alt="holder.js/100px225?theme=thumb&amp;bg=55595c&amp;fg=eceeef&amp;text=Thumbnail" style="height: 225px; width: 100%; display: block;" 
-                    src="{{asset($topic->image)}}" data-holder-rendered="true">
-                    <h4 class="card-text">　{{ $topic->title }}</h4>
-                </a>
-                </div>
-        </div>
-        @endforeach 
-</div>
-</div>
-</div>
-  @else
 
-  <section class="jumbotron text-center">
-    <div class="container">
-      <br>
-      <h1 class="jumbotron-heading">Astreet</h1>
-      <p class="lead text-muted">スポーツ、格闘技、武道、トレーニングなどの様々な情報が交わるポータルサイト</p>
-    </div>
-  </section>
+  
 
-  <!-- 以下、テスト用のあれこれ -->
-  <div class="row justify-content-around">
-  @foreach($topics as $topic)
-        <div class="col-md-4">
-            <div class="card mb-4 shadow-sm">
-                <a href="{{ route('topic.show',$topic->id) }}">
-                    <img class="card-img-top" 
-                    data-src="holder.js/100px225?theme=thumb&amp;bg=55595c&amp;fg=eceeef&amp;text=Thumbnail" 
-                    alt="holder.js/100px225?theme=thumb&amp;bg=55595c&amp;fg=eceeef&amp;text=Thumbnail" style="height: 225px; width: 100%; display: block;" 
-                    src="{{asset($topic->image)}}" data-holder-rendered="true">
-                    <h4 class="card-text">　{{ $topic->title }}</h4>
-                </a>
-                </div>
-        </div>
-</div>
-</div>
-</br>
-@endforeach 
-@endcan
 </main>
 
 <footer class="text-muted">

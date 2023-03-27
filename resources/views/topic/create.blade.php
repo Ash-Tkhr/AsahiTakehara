@@ -2,16 +2,13 @@
 
 @section('content')
 <main role="main" class="container">
-@section('title', '新規投稿')
-
-@section('content')
   <div class="starter-template">
     <h1>Bootstrap starter template</h1>
   </div>
   <section>
   <div id="contact_box">
-    <h2><b>記事投稿</b></h2>
-            @if($errors->any())
+    <h2><b>トピック投稿</b></h2>
+    @if($errors->any())
     <div class='alert alert-danger'>
       <ul>
         @foreach($errors->all() as $message)
@@ -20,11 +17,11 @@
       </ul>
     </div>
       @endif
-    <form action="{{route('article.store')}}" method="post" enctype="multipart/form-data">
+    <form action="{{route('topic.store')}}" method="post" enctype="multipart/form-data">
     @csrf
       <dl>
         <dt><label for="title"></label><span class="required">タイトル</span></dt>
-        <dd><input type="text" name="title" class="form-control" id="title" placeholder="" value=""></dd>
+        <dd><input type="text" name="title" id="title" class="form-control"placeholder="" value=""></dd>
         
         <dt><label for="category">カテゴリー</label><span class="required"></span></dt>
         <dd><select name='maincategory' class='maincategory' placeholder=メインカテゴリー'>
@@ -44,14 +41,14 @@
         <dt><label for="image">画像アップロード</label></dt>       
         <dd><input type="file" name="image" id="image" value=""></dd>
         <dt><label for="text">本文<span class="text"></span></label></dt>
-        <dd><textarea name="text" id="exampleFormControlTextarea1" class="form-control" rows="10"></textarea></dd>
-
+        <dd><textarea name="text" id="text" class="form-control" rows="10"></textarea></dd>
         <dd><button type="submit" class="send btn btn-sm btn-outline-primary" name="submit">投稿</button></dd>
       </dl>
     </form>
   </div>
 </section>
 </main><!-- /.container -->
+
 
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 <script>

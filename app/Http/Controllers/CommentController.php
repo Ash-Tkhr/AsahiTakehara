@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Article;
 use App\Comment;
+use App\Category;
 use App\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -48,7 +49,7 @@ class CommentController extends Controller
      * @param  \App\Comment  $comment
      * @return \Illuminate\Http\Response
      */
-    public function show(Comment $comment)
+    public function show(CreateComment $request)
     {
         $comment=new Comment;
         $comment->text=$request->comment;
@@ -59,9 +60,20 @@ class CommentController extends Controller
         $comment->comment_to='1';
         
         $comment->save();
+        $user=Auth::user();
+        $article=Article::where('id',$article->id)->first();
+        $maincategory=Category::Join('articles', 'categories.id', '=', 'articles.maincategory_id')
+                            ->where('articles.id',$article->id)
+                            ->first();
 
+        $subcategory=Category::Join('articles', 'categories.id', '=', 'articles.subcategory_id')
+                            ->where('articles.id',$article->id)
+                            ->first();
 
-        return redirect("article/comment");
+        return redirect("article/comment",[
+            'maincategory'=>$maincategory,
+            'subcategory'=>$subcategory,
+        ]);
     }
 
     /**
