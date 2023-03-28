@@ -107,14 +107,18 @@ class ArticleController extends Controller
             ->where('article_id', $article->id)
             ->select('users.name', 'comments.text', 'comments.created_at')
             ->get();
-
         $user = Auth::user();
+        $author = User::Join('articles', 'users.id', '=', 'articles.user_id')
+            ->where('articles.id', $article->id)
+            ->select('articles.id as articles_id', 'articles.title', 'articles.text', 'articles.image as articles_image', 'users.id as user_id', 'users.name', 'users.image as user_image')
+            ->first();
         return view("article", [
             'article' => $article,
             'comments' => $comment,
             'user' => $user,
             'maincategory' => $maincategory,
             'subcategory' => $subcategory,
+            'author' => $author,
         ]);
     }
 

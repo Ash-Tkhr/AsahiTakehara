@@ -52,14 +52,14 @@
       <div class="container d-flex  align-items-center">
         <div class="col-lg-4">
           <br>
-          <img class="rounded-circle" src="{{asset($user->image)}}" alt="Generic placeholder image" width="100" height="100">
+          <img class="rounded-circle" src="{{asset($author->user_image)}}" alt="Generic placeholder image" width="100" height="100">
         </div>
         <div class="col-lg-4">
           <br>
-          <h5>{{$user['name']}}</h5>
+          <h5>{{$author->name}}</h5>
         </div>
       </div>
-      <p>{{$user['profile']}}</p>
+      <p>{{$author->profile}}</p>
 
       <div class="p-3">
         <h4 class="font-italic"></h4>
