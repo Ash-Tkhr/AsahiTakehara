@@ -31,13 +31,13 @@ class ArticleController extends Controller
      */
     public function create()
     {
-        $user=Auth::user();
-        $category=new Category;
-        return view('article.create',[
-            'maincategories'=>$category->where('type','0')->get(),
-            'subcategories'=>$category->where('type','1')->get(),
-            'category'=>$category,
-            'user'=>$user,
+        $user = Auth::user();
+        $category = new Category;
+        return view('article.create', [
+            'maincategories' => $category->where('type', '0')->get(),
+            'subcategories' => $category->where('type', '1')->get(),
+            'category' => $category,
+            'user' => $user,
         ]);
     }
 
@@ -49,41 +49,41 @@ class ArticleController extends Controller
      */
     public function store(CreateData $request)
     {
-        $article=new Article;
-        $category=new Category;
+        $article = new Article;
+        $category = new Category;
 
-        $user=Auth::user();
-        $article->title=$request->title;
-        $article->text=$request->text;
-        $article->user_id=Auth::id();
-        if(isset($request->maincategory)){
-            $article->maincategory_id=$request->maincategory;
+        $user = Auth::user();
+        $article->title = $request->title;
+        $article->text = $request->text;
+        $article->user_id = Auth::id();
+        if (isset($request->maincategory)) {
+            $article->maincategory_id = $request->maincategory;
         }
-        if(isset($request->subcategory)){
-            $article->subcategory_id=$request->subcategory;
+        if (isset($request->subcategory)) {
+            $article->subcategory_id = $request->subcategory;
         }
 
-        if(isset($request->image)){
-            $dir='picture';
+        if (isset($request->image)) {
+            $dir = 'picture';
             $image = $request->file('image')->getClientOriginalName();
-            $request->file('image')->storeAs('public/' . $dir,$image);
-            $article->image='storage/' . $dir . '/' . $image;
+            $request->file('image')->storeAs('public/' . $dir, $image);
+            $article->image = 'storage/' . $dir . '/' . $image;
         }
-        $article->interest='1';
-        $article->repeat='1';
-        $article->study='1';
-        $article->answer='1';
-        $article->reaction='1';
-        if(isset($request->topics_id)){
-            $article->topics_id=$request->topics_id;
+        $article->interest = '1';
+        $article->repeat = '1';
+        $article->study = '1';
+        $article->answer = '1';
+        $article->reaction = '1';
+        if (isset($request->topics_id)) {
+            $article->topics_id = $request->topics_id;
         }
         $article->save();
-        $id=Article::latest('id')->first();
+        $id = Article::latest('id')->first();
 
 
-        return redirect()->route('article.show',[
-            'article'=>$id,
-            'user'=>$user,
+        return redirect()->route('article.show', [
+            'article' => $id,
+            'user' => $user,
         ]);
     }
 
@@ -93,29 +93,28 @@ class ArticleController extends Controller
      * @param  \App\Article  $article
      * @return \Illuminate\Http\Response
      */
-    public function show(Article $article,Request $request)
+    public function show(Article $article, Request $request)
     {
-        $article=Article::where('id',$article->id)->first();
-        $maincategory=Category::Join('articles', 'categories.id', '=', 'articles.maincategory_id')
-                            ->where('articles.id',$article->id)
-                            ->first();
+        $article = Article::where('id', $article->id)->first();
+        $maincategory = Category::Join('articles', 'categories.id', '=', 'articles.maincategory_id')
+            ->where('articles.id', $article->id)
+            ->first();
 
-        $subcategory=Category::Join('articles', 'categories.id', '=', 'articles.subcategory_id')
-                            ->where('articles.id',$article->id)
-                            ->first();
+        $subcategory = Category::Join('articles', 'categories.id', '=', 'articles.subcategory_id')
+            ->where('articles.id', $article->id)
+            ->first();
+        $comment = Comment::Join('users', 'comments.user_id', '=', 'users.id')
+            ->where('article_id', $article->id)
+            ->select('users.name', 'comments.text', 'comments.created_at')
+            ->get();
 
-        $comment=Comment::Join('users', 'comments.user_id', '=', 'users.id')
-                            ->where('article_id',$article->id)
-                            ->select('users.name','comments.text','comments.created_at')
-                            ->get();
-
-        $user=Auth::user();
-        return view("article",[
-            'article'=>$article,
-            'comments'=>$comment,
-            'user'=>$user,
-            'maincategory'=>$maincategory,
-            'subcategory'=>$subcategory,
+        $user = Auth::user();
+        return view("article", [
+            'article' => $article,
+            'comments' => $comment,
+            'user' => $user,
+            'maincategory' => $maincategory,
+            'subcategory' => $subcategory,
         ]);
     }
 
@@ -125,27 +124,27 @@ class ArticleController extends Controller
      * @param  \App\Article  $article
      * @return \Illuminate\Http\Response
      */
-    public function edit(Article $article,Request $request)
+    public function edit(Article $article, Request $request)
     {
-        $user=new User;
-        $category=new Category;
-        $article=Article::where('id',$article->id)->first();
-        $user=Auth::user();
-        $maincategory=Category::Join('articles', 'categories.id', '=', 'articles.maincategory_id')
-        ->where('articles.id',$article->id)
-        ->select('categories.name')
-        ->first();
-        $subcategory=Category::Join('articles', 'categories.id', '=', 'articles.subcategory_id')
-                ->where('articles.id',$article->id)
-                ->select('categories.name')
-                ->first();
-        return view('article/edit',[
-            'article'=>$article,
-            'user'=>$user,
-            'maincategories'=>$category->where('type','0')->get(),
-            'subcategories'=>$category->where('type','1')->get(),
-            'maincategory'=>$maincategory,
-            'subcategory'=>$subcategory,
+        $user = new User;
+        $category = new Category;
+        $article = Article::where('id', $article->id)->first();
+        $user = Auth::user();
+        $maincategory = Category::Join('articles', 'categories.id', '=', 'articles.maincategory_id')
+            ->where('articles.id', $article->id)
+            ->select('categories.name')
+            ->first();
+        $subcategory = Category::Join('articles', 'categories.id', '=', 'articles.subcategory_id')
+            ->where('articles.id', $article->id)
+            ->select('categories.name')
+            ->first();
+        return view('article/edit', [
+            'article' => $article,
+            'user' => $user,
+            'maincategories' => $category->where('type', '0')->get(),
+            'subcategories' => $category->where('type', '1')->get(),
+            'maincategory' => $maincategory,
+            'subcategory' => $subcategory,
         ]);
     }
 
@@ -158,37 +157,37 @@ class ArticleController extends Controller
      */
     public function update(CreateData $request, Article $article)
     {
-        $user=Auth::user();
-        $article->title=$request->title;
-        $article->text=$request->text;
-        $article->user_id=Auth::id();
-        if(isset($request->maincategory)){
-            $article->maincategory_id=$request->maincategory;
+        $user = Auth::user();
+        $article->title = $request->title;
+        $article->text = $request->text;
+        $article->user_id = Auth::id();
+        if (isset($request->maincategory)) {
+            $article->maincategory_id = $request->maincategory;
         }
-        if(isset($request->subcategory)){
-            $article->subcategory_id=$request->subcategory;
+        if (isset($request->subcategory)) {
+            $article->subcategory_id = $request->subcategory;
         }
 
-        if(isset($request->image)){
-            $dir='picture';
+        if (isset($request->image)) {
+            $dir = 'picture';
             $image = $request->file('image')->getClientOriginalName();
-            $request->file('image')->storeAs('public/' . $dir,$image);
-            $article->image='storage/' . $dir . '/' . $image;
+            $request->file('image')->storeAs('public/' . $dir, $image);
+            $article->image = 'storage/' . $dir . '/' . $image;
         }
-        $article->interest='1';
-        $article->repeat='1';
-        $article->study='1';
-        $article->answer='1';
-        $article->reaction='1';
-        if(isset($request->topics_id)){
-            $article->topics_id=$request->topics_id;
+        $article->interest = '1';
+        $article->repeat = '1';
+        $article->study = '1';
+        $article->answer = '1';
+        $article->reaction = '1';
+        if (isset($request->topics_id)) {
+            $article->topics_id = $request->topics_id;
         }
         $article->save();
-        $id=Article::latest('id')->first();
+        $id = Article::latest('id')->first();
 
-        return redirect()->route('article.show',[
-            'article'=>$id,
-            'user'=>$user,
+        return redirect()->route('article.show', [
+            'article' => $id,
+            'user' => $user,
         ]);
     }
 
@@ -198,17 +197,18 @@ class ArticleController extends Controller
      * @param  \App\Article  $article
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Article $article,User $mypage)
+    public function destroy(Article $article, User $mypage)
     {
         $article->delete();
         return redirect(route('mypage.show', Auth::id()))->with('success', 'ブログ記事を削除しました');
     }
-    public function bookmark(Request $request) {
+    public function bookmark(Request $request)
+    {
 
         $user_id = Auth::user()->id; //1.ログインユーザーのid取得
         $article_id = $request->article_id; //2.投稿idの取得
         $already_bookmarked = Bookmark::where('user_id', $user_id)->where('article_id', $article_id)->first(); //3.
-    
+
         if (!$already_bookmarked) { //もしこのユーザーがこの投稿にまだいいねしてなかったら
             $bookmark = new Bookmark; //4.bookmarkクラスのインスタンスを作成
             $bookmark->article_id = $article_id; //bookmarkインスタンスにarticle_id,user_idをセット
@@ -224,7 +224,7 @@ class ArticleController extends Controller
         ];
         return response()->json($param); //6.JSONデータをjQueryに返す
 
-        }
+    }
 }
         // $maincategory_id=Category::where('id',$article->maincategory_id)->get();
         // $maincategory=$maincategory_id->name;
