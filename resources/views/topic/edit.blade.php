@@ -1,6 +1,7 @@
 @extends('layout')
 
 @section('content')
+@can ('admin_only')
 <main role="main" class="container">
   <div class="starter-template">
     <h1>Bootstrap starter template</h1>
@@ -76,4 +77,5 @@
 </body>
 
 </html>
+@endcan
 @endsection

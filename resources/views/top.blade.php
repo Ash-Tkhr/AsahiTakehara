@@ -20,13 +20,15 @@
 
   <div class="album py-5 bg-light">
     <div class="container">
+      <h3>新着トピックス</h3>
+      <p>最新のスポーツニュースやトピックスをお届けします</p>
       <div class="row justify-content-around">
         @foreach($topics as $topic)
-        <div class="col-md-4">
+        <div class="col-md-4 mb-3">
           <div class="card mb-4 shadow-sm">
             <a href="{{ route('topic.show',$topic->id) }}">
               <img class="card-img-top" data-src="holder.js/100px225?theme=thumb&amp;bg=55595c&amp;fg=eceeef&amp;text=Thumbnail" alt="holder.js/100px225?theme=thumb&amp;bg=55595c&amp;fg=eceeef&amp;text=Thumbnail" style="height: 225px; width: 100%; display: block;" src="{{asset($topic->image)}}" data-holder-rendered="true">
-              <h4 class="card-text">　{{ $topic->title }}</h4>
+              <h5 class="card-text">　{{ $topic->title }}</h5>
             </a>
           </div>
         </div>
@@ -45,15 +47,17 @@
   </section>
 
   <!-- 以下、テスト用のあれこれ -->
-  <div class="album py-5 bg-light">
+  <div class="album py-5">
     <div class="container">
+      <h3>新着トピックス</h3>
+      <p>最新のスポーツニュースやトピックスをお届けします</p>
       <div class="row justify-content-around">
         @foreach($topics as $topic)
-        <div class="col-md-4">
+        <div class="col-md-4 mb-3">
           <div class="card mb-4 shadow-sm">
             <a href="{{ route('topic.show',$topic->id) }}">
               <img class="card-img-top" data-src="holder.js/100px225?theme=thumb&amp;bg=55595c&amp;fg=eceeef&amp;text=Thumbnail" alt="holder.js/100px225?theme=thumb&amp;bg=55595c&amp;fg=eceeef&amp;text=Thumbnail" style="height: 225px; width: 100%; display: block;" src="{{asset($topic->image)}}" data-holder-rendered="true">
-              <h4 class="card-text">　{{ $topic->title }}</h4>
+              <h5 class="card-text">　{{ $topic->title }}</h5>
             </a>
           </div>
         </div>

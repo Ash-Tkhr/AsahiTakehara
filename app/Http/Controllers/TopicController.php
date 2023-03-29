@@ -93,7 +93,7 @@ class TopicController extends Controller
         $subcategory = Category::Join('topics', 'categories.id', '=', 'topics.subcategory_id')
             ->where('topics.id', $topic->id)
             ->first();
-
+        $other_topics = Topic::latest()->take(5)->get();
 
         $user = Auth::user();
         return view("topics", [
@@ -101,6 +101,7 @@ class TopicController extends Controller
             'user' => $user,
             'maincategory' => $maincategory,
             'subcategory' => $subcategory,
+            'others' => $other_topics,
         ]);
     }
 

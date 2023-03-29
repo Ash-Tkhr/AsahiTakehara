@@ -1,6 +1,7 @@
 @extends('layout')
 
 @section('content')
+@can ('admin_only')
 <main role="main">
     @can ('admin_only')
     <section class="jumbotron text-center">
@@ -86,5 +87,5 @@
 </svg></body>
 
 </html>
-
+@endcan
 @endsection

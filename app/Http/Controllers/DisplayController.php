@@ -17,7 +17,7 @@ class DisplayController extends Controller
     public function index(Request $request)
     {
         $user = Auth::user();
-        $topics = Topic::get();
+        $topics = Topic::latest()->take(15)->get();
         return view('top', [
             'user' => $user,
             'topics' => $topics,
@@ -51,14 +51,63 @@ class DisplayController extends Controller
                 $query->where('title', 'like', '%' . $value . '%')->orWhere('text', 'like', '%' . $value . '%');
             }
             // 上記で取得した$queryをページネートにし、変数$usersに代入
-            $articles = $query->paginate(20);
         }
         // ビューにusersとsearchを変数として渡す
+
+        $select = $request->search;
+
+        // セレクトボックスの値に応じてソート
+        switch ($select) {
+            case '1':
+                $articles = $query->latest()->paginate(20);
+                break;
+            case '2':
+                $articles = $query->orderBy('created_at', 'desc')->paginate(20);
+                break;
+            case '3':
+                $articles = $query->orderBy('created_at', 'asc')->paginate(20);
+                break;
+            case '4':
+                $articles = $query->orderBy('interest', 'desc')->paginate(20);
+                break;
+            case '5':
+                $articles = $query->orderBy('interest', 'asc')->paginate(20);
+                break;
+            case '6':
+                $articles = $query->orderBy('repeat', 'desc')->paginate(20);
+                break;
+            case '7':
+                $articles = $query->orderBy('repeat', 'asc')->paginate(20);
+                break;
+            case '8':
+                $articles = $query->orderBy('study', 'desc')->paginate(20);
+                break;
+            case '9':
+                $articles = $query->orderBy('study', 'asc')->paginate(20);
+                break;
+            case '10':
+                $articles = $query->orderBy('answer', 'desc')->paginate(20);
+                break;
+            case '11':
+                $articles = $query->orderBy('answer', 'asc')->paginate(20);
+                break;
+            case '12':
+                $articles = $query->orderBy('reaction', 'desc')->paginate(20);
+                break;
+            case '13':
+                $articles = $query->orderBy('reaction', 'asc')->paginate(20);
+                break;
+            default:
+                // デフォルトはID順
+                $articles = $query->paginate(20);
+                break;
+        }
         return view('article_search')
             ->with([
                 'articles' => $articles,
                 'search' => $search,
                 'user' => $user,
+                'select' => $select,
             ]);
     }
     public function newArticle(Request $request)
@@ -120,19 +169,22 @@ class DisplayController extends Controller
         switch ($select) {
             case '1':
                 //「指定なし」はID順
-                $items = Article::get();
+                $items
+                    = $articles->get();
                 break;
             case '2':
-                // 「価格が低い順」でソート
-                $items = Article::orderBy('created_at', 'asc')->get();
+                // 「タイトルが低い順」でソート
+                $items = $articles->orderBy('created_at', 'asc')->get();
                 break;
             case '3':
-                // 「価格が高い順」でソート
-                $items = Article::orderBy('created_at', 'desc')->get();
+                // 「タイトルが高い順」でソート
+                $items
+                    = $articles->orderBy('created_at', 'desc')->get();
                 break;
             default:
                 // デフォルトはID順
-                $items = Article::get();
+                $items
+                    = $articles->get();
                 break;
         }
         // ビューにusersとsearchを変数として渡す

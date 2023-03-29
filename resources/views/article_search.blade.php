@@ -12,46 +12,53 @@
 
   <!-- 以下、テスト用のあれこれ -->
   @csrf
-  <div class="center-block ">
+  <div class="center-block">
     <h1 class=" text-center">「{{$search}}」の検索結果</h1>
-    <div class="form-inline my-2 my-lg-0 d-flex ">
+
+    <div class="form-inline  ml-md-0 d-flex ">
       <div>
-        <form class="form-inline my-2 my-lg-0" action="{{ route('article.search')}}" method="get">
-          <input class="form-control mr-sm-2" type="search" placeholder="検索" aria-label="Search" name="searchword">
-      </div>
-      <div>
-        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">
-          <span class="search">
-            <i class="fas fa-search pr-1"></i>
-          </span>
-        </button>
+        <form class="form-inline my-2" action="{{ route('article.search')}}" method="get">
+          <input class="form-control mr-sm-2" type="search" placeholder="検索" aria-label="Search" name="searchword" value="{{$search}}">
+          <select name="search" id="search" class="form-select form-select-lg col-md-4">
+            <option value="1" {{ $select == '1' ? 'selected': '' }}>指定なし</option>
+            <option value="2" {{ $select == '2' ? 'selected': '' }}>投稿日時が新しい順</option>
+            <option value="3" {{ $select == '3' ? 'selected': '' }}>投稿日時が古い順</option>
+            <option value="4" {{ $select == '4' ? 'selected': '' }}>興味ベクトル降順</option>
+            <option value="5" {{ $select == '5' ? 'selected': '' }}>興味ベクトル昇順</option>
+            <option value="6" {{ $select == '6' ? 'selected': '' }}>反復ベクトル降順</option>
+            <option value="7" {{ $select == '7' ? 'selected': '' }}>反復ベクトル昇順</option>
+            <option value="8" {{ $select == '8' ? 'selected': '' }}>研究ベクトル降順</option>
+            <option value="9" {{ $select == '9' ? 'selected': '' }}>研究ベクトル昇順</option>
+            <option value="10" {{ $select == '10' ? 'selected': '' }}>頻度ベクトル降順</option>
+            <option value="11" {{ $select == '11' ? 'selected': '' }}>頻度ベクトル昇順</option>
+            <option value="12" {{ $select == '12' ? 'selected': '' }}>反応ベクトル降順</option>
+            <option value="13" {{ $select == '13' ? 'selected': '' }}>反応ベクトル昇順</option>
+          </select>
+          <button class="btn btn-primary" type="submit">
+            <span class="search">
+              検索
+            </span>
+          </button>
         </form>
       </div>
     </div>
     <br><br><br>
-    <!-- <form action="{{route('article.list')}}" id="form">
-        <select name="price" id="price">
-            <option value="1" >指定なし</option>
-            <option value="2" >投稿が古い順</option>
-            <option value="3" >投稿が新しい順</option>
-        </select>
-    </form> -->
+
+
     @foreach($articles as $article)
-    <div class="col-md-8">
+    <div class="col-md-4 ml-md-5">
       <a href="{{ route('article.show',$article->id) }}">
         <div class="card mb-4 shadow-sm">
           <img class="card-img-top" data-src="holder.js/100px225?theme=thumb&amp;bg=55595c&amp;fg=eceeef&amp;text=Thumbnail" alt="Thumbnail [100%x225]" style="height: 225px; width: 100%; display: block;" src="{{asset($article->image)}}" data-holder-rendered="true">
-          <div class="card-body">
-            <p class="card-text">{{ $article->title }}</p>
-            <div class="card-body d-flex justify-content-between">
-              <div class="d-flex justify-content-between align-items-center">
-                <small class="text-muted">{{$article->User->name}}</small>
-              </div>
-              <div class="d-flex justify-content-between align-items-center">
-                <small class="text-muted">{{$article->created_at}}</small>
-              </div>
-              <div class="d-flex justify-content-between align-items-center">
-                <small class="text-muted"></small>
+          <div class="row card-body mb-1">
+            <div class="card-text">{{ $article->title }}
+              <div class="card-body d-flex justify-content-around mb-1">
+                <div>
+                  <small class="text-muted">{{$article->User->name}}</small>
+                </div>
+                <div>
+                  <small class="text-muted">　　　{{$article->created_at}}</small>
+                </div>
               </div>
             </div>
           </div>
@@ -104,3 +111,8 @@
 
 </html>
 @endsection
+<style>
+  .center-block {
+    margin: 0 auto;
+  }
+</style>
