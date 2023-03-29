@@ -127,10 +127,17 @@
             </ul>
           </div>
           @endif
-          @foreach($comments as $comment)
-          <small>{{$comment['name']}} {{$comment['created_at']}}</small>
-          <p>{{$comment['text']}}</p>
-          @endforeach
+          <div>
+            @foreach($comments as $comment)
+            {{$comment['text']}}
+            <br>
+            <div class="mb-12  text-right">
+              <small>by　{{$comment['name']}}</small>
+              <br>
+              <small>　　　　{{$comment['created_at']}}</small><br>
+            </div>
+            @endforeach
+          </div>
         </div>
       </div>
     </aside><!-- /.blog-sidebar -->

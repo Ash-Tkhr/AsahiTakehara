@@ -29,8 +29,8 @@
             <option value="7" {{ $select == '7' ? 'selected': '' }}>反復ベクトル昇順</option>
             <option value="8" {{ $select == '8' ? 'selected': '' }}>研究ベクトル降順</option>
             <option value="9" {{ $select == '9' ? 'selected': '' }}>研究ベクトル昇順</option>
-            <option value="10" {{ $select == '10' ? 'selected': '' }}>頻度ベクトル降順</option>
-            <option value="11" {{ $select == '11' ? 'selected': '' }}>頻度ベクトル昇順</option>
+            <option value="10" {{ $select == '10' ? 'selected': '' }}>活動ベクトル降順</option>
+            <option value="11" {{ $select == '11' ? 'selected': '' }}>活動ベクトル昇順</option>
             <option value="12" {{ $select == '12' ? 'selected': '' }}>反応ベクトル降順</option>
             <option value="13" {{ $select == '13' ? 'selected': '' }}>反応ベクトル昇順</option>
           </select>

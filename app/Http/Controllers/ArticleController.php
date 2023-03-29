@@ -53,6 +53,7 @@ class ArticleController extends Controller
         $category = new Category;
 
         $user = Auth::user();
+        $article_count = Article::where('user_id', Auth::id())->count();
         $article->title = $request->title;
         $article->text = $request->text;
         $article->user_id = Auth::id();
@@ -69,18 +70,18 @@ class ArticleController extends Controller
             $request->file('image')->storeAs('public/' . $dir, $image);
             $article->image = 'storage/' . $dir . '/' . $image;
         }
-        $article->interest = '1';
-        $article->repeat = '1';
-        $article->study = '1';
-        $article->answer = '1';
-        $article->reaction = '1';
+        $article->interest = '0';
+        $article->repeat = '0';
+        $article->study = '0';
+        $article->answer =  $article_count + 1;
+        $article->reaction = '0';
         if (isset($request->topics_id)) {
             $article->topics_id = $request->topics_id;
         }
         $article->save();
 
 
-        return redirect()->route('article.show', [
+        return redirect()->route('article.view', [
             'article' => $article,
             'user' => $user,
         ]);
@@ -177,7 +178,7 @@ class ArticleController extends Controller
         }
         $article->save();
 
-        return redirect()->route('article.show', [
+        return redirect()->route('article.view', [
             'article' => $article,
             'user' => $user,
         ]);

@@ -40,7 +40,7 @@ class BookmarkController extends Controller
         $user_id = Auth::user()->id; //1.ログインユーザーのid取得
         $review_id = $request->review_id; //2.投稿idの取得
         $already_liked = Like::where('user_id', $user_id)->where('review_id', $review_id)->first(); //3.
-    
+
         if (!$already_liked) { //もしこのユーザーがこの投稿にまだいいねしてなかったら
             $like = new Like; //4.Likeクラスのインスタンスを作成
             $like->review_id = $review_id; //Likeインスタンスにreview_id,user_idをセット
@@ -99,6 +99,7 @@ class BookmarkController extends Controller
      */
     public function destroy(Bookmark $bookmark)
     {
-        //
+        $bookmark->delete();
+        return redirect(route('mypage.show', Auth::id()))->with('success', 'ブックマークを解除しました');
     }
 }

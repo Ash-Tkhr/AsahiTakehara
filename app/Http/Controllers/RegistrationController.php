@@ -88,6 +88,9 @@ class RegistrationController extends Controller
             ->where('articles.id', $article->id)
             ->first();
         $comment = Comment::where('article_id', $article->id)->get();
+        $bookmark = Bookmark::where('article_id', $article->id)->get();
+        $article->reaction = count($comment) + count($bookmark);
+
         return view("/article", [
             'article' => $article,
             'comments' => $comment,
@@ -101,8 +104,9 @@ class RegistrationController extends Controller
     {
         $article = new Article;
         $category = new Category;
-        // $datas=$request->all(); 
 
+        $user = Auth::user();
+        $article_count = Article::where('user_id', Auth::id())->count();
         $article->title = $request->title;
         $article->text = $request->text;
         $article->user_id = Auth::id();
@@ -119,21 +123,20 @@ class RegistrationController extends Controller
             $request->file('image')->storeAs('public/' . $dir, $image);
             $article->image = 'storage/' . $dir . '/' . $image;
         }
-        $article->interest = '1';
-        $article->repeat = '1';
-        $article->study = '1';
-        $article->answer = '1';
-        $article->reaction = '1';
+        $article->interest = '0';
+        $article->repeat = '0';
+        $article->study = '0';
+        $article->answer =  $article_count + 1;
+        $article->reaction = '0';
         if (isset($request->topics_id)) {
             $article->topics_id = $request->topics_id;
         }
         $article->save();
-        $id = Article::latest('id')->first();
-        // dd($id);
 
 
-        return redirect()->route('article.show', [
-            'article' => $id,
+        return redirect()->route('article.view', [
+            'article' => $article,
+            'user' => $user,
         ]);
     }
 
@@ -142,6 +145,7 @@ class RegistrationController extends Controller
 
         $user_id = Auth::user()->id; //1.ログインユーザーのid取得
         $article_id = $request->article_id; //2.投稿idの取得
+        $article = Article::where('id', $request->article_id);
         $already_bookmarked = Bookmark::where('user_id', $user_id)->where('article_id', $article_id)->first(); //3.
 
         if (!$already_bookmarked) { //もしこのユーザーがこの投稿にまだいいねしてなかったら
@@ -154,8 +158,9 @@ class RegistrationController extends Controller
         } else { //もしこのユーザーがこの投稿に既にいいねしてたらdelete
             Bookmark::where('article_id', $article_id)->where('user_id', $user_id)->delete();
         }
-
-
+        // $comment = Comment::where('article_id', $article->id)->get();
+        // $bookmark = Bookmark::where('article_id', $article->id)->get();
+        // $article->reaction = count($comment) + count($bookmark);
         return response()->json('ok'); //6.JSONデータをjQueryに返す
 
     }
@@ -183,8 +188,8 @@ class RegistrationController extends Controller
             )->groupBy('user_id')
             ->having('user_count', '>', 1)
             ->get();
-
         $article->repeat = $repeater->count();
+        $article->answer = Article::where('user_id', Auth::id())->count();
 
         $article = Article::where('id', $article->id)->first();
         $maincategory = Category::Join('articles', 'categories.id', '=', 'articles.maincategory_id')
