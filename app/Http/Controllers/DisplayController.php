@@ -138,62 +138,26 @@ class DisplayController extends Controller
             'user' => $user,
         ]);
     }
-    public function articleList(Request $request)
+    public function articleView(Article $article, Request $request)
     {
+        $article = Article::where('id', $article->id)->first();
+        $maincategory = Category::Join('articles', 'categories.id', '=', 'articles.maincategory_id')
+            ->where('articles.id', $article->id)
+            ->first();
+        $subcategory = Category::Join('articles', 'categories.id', '=', 'articles.subcategory_id')
+            ->where('articles.id', $article->id)
+            ->first();
+        $comment = Comment::Join('users', 'comments.user_id', '=', 'users.id')
+            ->where('article_id', $article->id)
+            ->select('users.name', 'comments.text', 'comments.created_at')
+            ->get();
         $user = Auth::user();
-        // ユーザー一覧をページネートで取得
-        $articles = Article::paginate(20);
-        // 検索フォームで入力された値を取得する
-        $search = $request->input('searchword');
-        // クエリビルダ
-        $query = Article::query();
-        // もし検索フォームにキーワードが入力されたら
-        if ($search) {
-            // 全角スペースを半角に変換
-            $spaceConversion = mb_convert_kana($search, 's');
-            // 単語を半角スペースで区切り、配列にする（例："山田 翔" → ["山田", "翔"]）
-            $wordArraySearched = preg_split('/[\s,]+/', $spaceConversion, -1, PREG_SPLIT_NO_EMPTY);
-            // 単語をループで回し、ユーザーネームと部分一致するものがあれば、$queryとして保持される
-            foreach ($wordArraySearched as $value) {
-                $query->where('title', 'like', '%' . $value . '%')->orWhere('text', 'like', '%' . $value . '%');
-            }
-            // 上記で取得した$queryをページネートにし、変数$usersに代入
-            $articles = $query->paginate(20);
-        }
-
-        $user = Auth::user();
-        // セレクトボックスで選択した値
-        $select = $request->sort;
-
-        // セレクトボックスの値に応じてソート
-        switch ($select) {
-            case '1':
-                //「指定なし」はID順
-                $items
-                    = $articles->get();
-                break;
-            case '2':
-                // 「タイトルが低い順」でソート
-                $items = $articles->orderBy('created_at', 'asc')->get();
-                break;
-            case '3':
-                // 「タイトルが高い順」でソート
-                $items
-                    = $articles->orderBy('created_at', 'desc')->get();
-                break;
-            default:
-                // デフォルトはID順
-                $items
-                    = $articles->get();
-                break;
-        }
-        // ビューにusersとsearchを変数として渡す
-        return view('article.list')
-            ->with([
-                'articles' => $articles,
-                'search' => $search,
-                'user' => $user,
-                'select' => $select,
-            ]);
+        return view("article/all", [
+            'article' => $article,
+            'comments' => $comment,
+            'user' => $user,
+            'maincategory' => $maincategory,
+            'subcategory' => $subcategory,
+        ]);
     }
 }

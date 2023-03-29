@@ -78,11 +78,10 @@ class ArticleController extends Controller
             $article->topics_id = $request->topics_id;
         }
         $article->save();
-        $id = Article::latest('id')->first();
 
 
         return redirect()->route('article.show', [
-            'article' => $id,
+            'article' => $article,
             'user' => $user,
         ]);
     }
@@ -172,19 +171,14 @@ class ArticleController extends Controller
             $request->file('image')->storeAs('public/' . $dir, $image);
             $article->image = 'storage/' . $dir . '/' . $image;
         }
-        $article->interest = '1';
-        $article->repeat = '1';
-        $article->study = '1';
-        $article->answer = '1';
-        $article->reaction = '1';
+
         if (isset($request->topics_id)) {
             $article->topics_id = $request->topics_id;
         }
         $article->save();
-        $id = Article::latest('id')->first();
 
         return redirect()->route('article.show', [
-            'article' => $id,
+            'article' => $article,
             'user' => $user,
         ]);
     }

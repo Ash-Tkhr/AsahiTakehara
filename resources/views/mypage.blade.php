@@ -88,93 +88,25 @@
 
 </main>
 
-<div class=”row”>
 
-    <div class=”col-8″>
-        <main role="main">
-            <div class="album py-5 bg-light">
-                <div class="container">
-                    @if (session('flash_message'))
-                    <div class="flash_message">
-                        {{ session('flash_message') }}
-                    </div>
-                    @endif
-                    <div class="row">
-                        <h2>投稿記事一覧</h2>
-                        @if(isset($articles))
-                        @foreach($articles as $article)
-                        <div class="col-md-4">
-                            <div class="card mb-4 shadow-sm">
-                                <a href="{{ route('article.show',$article->id) }}">
-                                    <img class="card-img-top" data-src="holder.js/100px225?theme=thumb&amp;bg=55595c&amp;fg=eceeef&amp;text=Thumbnail" alt="holder.js/100px225?theme=thumb&amp;bg=55595c&amp;fg=eceeef&amp;text=Thumbnail" style="height: 225px; width: 100%; display: block;" src="{{asset($article->image)}}" data-holder-rendered="true">
-                                    <h4 class="card-text">　{{ $article->title }}</h4>
-                                </a>
-                                <div class="card-body">
-                                    <div class="d-flex justify-content-between align-items-center text-dark">
-                                        <p><a class="btn btn-outline-dark my-2 my-sm-0" href="{{ route('article.edit',['article'=>$article['id']])}}" role="button">
-                                                <input class="btn btn-outline-dark my-2 my-sm-0" value='$article->id' type="hidden">
-                                                編集
-                                            </a></p>
-                                        <form action="{{route('article.destroy',$article->id)}}" method="POST">
-                                            <input class="btn btn-outline-dark my-2 my-sm-0" value='削除' type="submit" data-toggle="modal" data-target="#testModal" onclick='return confirm("削除しますか？");'>
-                                            @method('delete')
-                                            @csrf
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        </br>
-                        @endforeach
-                        @else
-                        <h2>まだ記事が投稿されていません</h2>
-                        @endif
-                        <aside class="blog-sidebar">
-                            <h2>ブックマーク一覧</h2>
-                            @foreach($bookmarks as $bookmark)
-                            <div class="card mb-4 shadow-sm">
-                                <a href="{{ route('article.show',$bookmark->id) }}">
-                                    @if(isset($bookmark->Article->image))
-                                    <img class="card-img-top" data-src="holder.js/100px225?theme=thumb&amp;bg=55595c&amp;fg=eceeef&amp;text=Thumbnail" alt="holder.js/100px225?theme=thumb&amp;bg=55595c&amp;fg=eceeef&amp;text=Thumbnail" style="height: 225px; width: 100%; display: block;" src="{{asset($bookmark->Article->image)}}" data-holder-rendered="true">
-                                    @else
-                                    <img class="card-img-top" data-src="holder.js/100px225?theme=thumb&amp;bg=55595c&amp;fg=eceeef&amp;text=Thumbnail" alt="holder.js/100px225?theme=thumb&amp;bg=55595c&amp;fg=eceeef&amp;text=Thumbnail" style="height: 225px; width: 100%; display: block;" src="holder.js/100px225?theme=thumb&amp;bg=55595c&amp;fg=eceeef&amp;text=Thumbnail" data-holder-rendered="true">
-                                    @endif
-                                    <h4 class="card-text">　{{ $bookmark->title }}</h4>
-                                </a>
-                                <div class="card-body">
-                                    <div class="d-flex justify-content-between align-items-center text-dark">
-                                        <form action="{{route('article.destroy',$bookmark->id)}}" method="POST">
-                                            <input class="btn btn-outline-dark my-2 my-sm-0" value='削除' type="submit" data-toggle="modal" data-target="#testModal" onclick='return confirm("削除しますか？");'>
-                                            @method('delete')
-                                            @csrf
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                            @endforeach
-                        </aside>
-                        <!-- 削除用モーダル -->
-                        <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h4>投稿削除</h4>
-                                    </div>
-                                    <div class="modal-body">
-                                        <p>この投稿を削除しますか？</p>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-default" data-dismiss="modal">キャンセル</button>
-                                        <button type="button" class="btn btn-danger">削除</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-        </main>
+<!-- 削除用モーダル -->
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4>投稿削除</h4>
+            </div>
+            <div class="modal-body">
+                <p>この投稿を削除しますか？</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">キャンセル</button>
+                <button type="button" class="btn btn-danger">削除</button>
+            </div>
+        </div>
     </div>
 </div>
+
 @endsection
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 <script>

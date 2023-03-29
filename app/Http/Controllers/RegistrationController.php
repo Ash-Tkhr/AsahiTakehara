@@ -7,12 +7,14 @@ use App\Article;
 use App\Bookmark;
 use App\Category;
 use App\Comment;
+use App\Logue;
 use App\User;
 use App\Topic;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\CreateData;
 use App\Http\Controllers\CreateComment;
+use Carbon\Carbon;
 
 
 class RegistrationController extends Controller
@@ -156,5 +158,54 @@ class RegistrationController extends Controller
 
         return response()->json('ok'); //6.JSONデータをjQueryに返す
 
+    }
+
+    public function articleAll(Article $article, Request $request)
+    {
+        $logue = new Logue;
+        $logue->user_id = Auth::id();
+        $logue->article_id = $article->id;
+        if (DB::table('logues')->where('user_id', Auth::id())->where('article_id', $article->id)
+            ->where('date', Carbon::now()->toDateString())->exists()
+        ) {
+            $logue->date = '';
+        } else {
+            $logue->date = Carbon::now()->toDateString();
+            $logue->save();
+        }
+        $article->interest = Logue::where('article_id', $article->id)
+            ->count();
+
+        $repeater = Logue::where('article_id', $article->id)
+            ->select(
+                'user_id',
+                \DB::raw('COUNT(user_id) AS user_count')
+            )->groupBy('user_id')
+            ->having('user_count', '>', 1)
+            ->get();
+
+        $article->repeat = $repeater->count();
+
+        $article = Article::where('id', $article->id)->first();
+        $maincategory = Category::Join('articles', 'categories.id', '=', 'articles.maincategory_id')
+            ->where('articles.id', $article->id)
+            ->first();
+        $subcategory = Category::Join('articles', 'categories.id', '=', 'articles.subcategory_id')
+            ->where('articles.id', $article->id)
+            ->first();
+        $comment = Comment::Join('users', 'comments.user_id', '=', 'users.id')
+            ->where('article_id', $article->id)
+            ->select('users.name', 'comments.text', 'comments.created_at')
+            ->get();
+        $user = Auth::user();
+        $article->save();
+
+        return redirect()->route("article.view", [
+            'article' => $article,
+            'comments' => $comment,
+            'user' => $user,
+            'maincategory' => $maincategory,
+            'subcategory' => $subcategory,
+        ]);
     }
 }
