@@ -19,20 +19,20 @@
       <div class="blog-post">
         <h2 class="blog-post-title font-italic">{{$article['title']}}</h2>
         <form class="form-inline my-2 my-lg-0" action="{{ route('article.search')}}" method="get">
+          @if(isset($maincategory))
           <input class="form-control mr-sm-2" type="hidden" placeholder="検索" aria-label="Search" name="searchword" value='{{$maincategory->name}}'>
-          @if(isset($maincategory['name']))
           <button class="btn btn-outline-success my-2 my-sm-0" type="submit">
-            {{$maincategory['name']}}
+            {{$maincategory->name}}
             @else
             <!-- 表示なし -->
             @endif
           </button>
         </form>
         <form class="form-inline my-2 my-lg-0" action="{{ route('article.search')}}" method="get">
+          @if(isset($subcategory))
           <input class="form-control mr-sm-2" type="hidden" placeholder="検索" aria-label="Search" name="searchword" value='{{$subcategory->name}}'>
-          @if(isset($subcategory['name']))
           <button class="btn btn-outline-success my-2 my-sm-0" type="submit">
-            {{$subcategory['name']}}
+            {{$subcategory->name}}
             @else
             <!-- 表示なし -->
             @endif
@@ -52,14 +52,14 @@
       <div class="container d-flex  align-items-center">
         <div class="col-lg-4">
           <br>
-          <img class="rounded-circle" src="{{asset($author->user_image)}}" alt="Generic placeholder image" width="100" height="100">
+          <img class="rounded-circle" src="{{asset($article->User->image)}}" alt="Generic placeholder image" width="100" height="100">
         </div>
-        <div class="col-lg-4">
+        <div class="col-lg-4 text-nowrap">
           <br>
-          <h5>{{$author->name}}</h5>
+          <h5>{{$article->User->name}}</h5>
         </div>
       </div>
-      <p>{{$author->profile}}</p>
+      <p>{{$article->User->profile}}</p>
 
       <div class="p-3">
         <h4 class="font-italic"></h4>

@@ -21,27 +21,27 @@ class UserController extends Controller
      */
     public function index(User $user)
     {
-        $user=Auth::user();
-        $articles=Article::where('user_id',Auth::id())->get();
-        $bookmarks=Bookmark::Join('articles', 'bookmarks.article_id', '=', 'articles.id')
-        ->where('bookmarks.user_id',Auth::id())
-        ->select('articles.title')
-        ->get();
-        if(isset($bookmarks)){
-            $bookmark=$bookmarks;
-        }else{
-            $bookmark='';
+        $user = Auth::user();
+        $articles = Article::where('user_id', Auth::id())->get();
+        $bookmarks = Bookmark::Join('articles', 'bookmarks.article_id', '=', 'articles.id')
+            ->where('bookmarks.user_id', Auth::id())
+            ->select('articles.title')
+            ->get();
+        if (isset($bookmarks)) {
+            $bookmark = $bookmarks;
+        } else {
+            $bookmark = '';
         }
 
-        if(isset($articles)){
-            $article=$articles;
-        }else{
-            $article='';
+        if (isset($articles)) {
+            $article = $articles;
+        } else {
+            $article = '';
         }
-        return view("mypage",[
-            'articles'=>$article,
-            'user'=>$user,
-            'bookmarks'=>$bookmark,
+        return view("mypage", [
+            'articles' => $article,
+            'user' => $user,
+            'bookmarks' => $bookmark,
         ]);
     }
 
@@ -72,33 +72,33 @@ class UserController extends Controller
      * @param  \App\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function show(User $mypage,Request $request)
+    public function show(User $mypage, Request $request)
     {
-        $user=Auth::user();
-        $articles=Article::where('user_id',Auth::id())->get();
-        $bookmarks=Bookmark::Join('articles', 'bookmarks.article_id', '=', 'articles.id')
-        ->where('bookmarks.user_id',Auth::id())
-        ->select('articles.title')
-        ->get();
-        if(isset($bookmarks)){
-            $bookmark=$bookmarks;
-        }else{
-            $bookmark='';
+        $user = Auth::user();
+        $articles = Article::where('user_id', Auth::id())->get();
+        $bookmarks = Bookmark::Join('articles', 'bookmarks.article_id', '=', 'articles.id')
+            ->where('bookmarks.user_id', Auth::id())
+            ->select('articles.id', 'articles.title', 'articles.image')
+            ->get();
+        if (isset($bookmarks)) {
+            $bookmark = $bookmarks;
+        } else {
+            $bookmark = '';
         }
 
-        if(isset($articles)){
-            $article=$articles;
-        }else{
-            $article='';
+        if (isset($articles)) {
+            $article = $articles;
+        } else {
+            $article = '';
         }
-        return view("mypage",[
-            'articles'=>$article,
-            'user'=>$user,
-            'bookmarks'=>$bookmark,
+        return view("mypage", [
+            'articles' => $article,
+            'user' => $user,
+            'bookmarks' => $bookmark,
         ]);
     }
 
-    
+
     /**
      * Show the form for editing the specified resource.
      *
@@ -107,11 +107,11 @@ class UserController extends Controller
      */
     public function edit(User $mypage)
     {
-        $user=new User;
-        $article=new Article;
-        $user=Auth::user();
-        return view('mypage/edit',[
-            'user'=>$user,
+        $user = new User;
+        $article = new Article;
+        $user = Auth::user();
+        return view('mypage/edit', [
+            'user' => $user,
         ]);
     }
 
@@ -124,22 +124,22 @@ class UserController extends Controller
      */
     public function update(UpdateUser $request, User $user)
     {
-        $user=Auth::user();
-        $user->name=$request->name;
-        $user->profile=$request->profile;
-        if(isset($request->image)){
-            $dir='picture';
+        $user = Auth::user();
+        $user->name = $request->name;
+        $user->profile = $request->profile;
+        if (isset($request->image)) {
+            $dir = 'picture';
             $image = $request->file('image')->getClientOriginalName();
-            $request->file('image')->storeAs('public/' . $dir,$image);
-                $user->image='storage/' . $dir . '/' . $image;
+            $request->file('image')->storeAs('public/' . $dir, $image);
+            $user->image = 'storage/' . $dir . '/' . $image;
         }
         $user->save();
-        $article=Auth::user()->Article()->get();
-        $bookmark=Auth::user()->Bookmark()->get();
-        return redirect()->route('mypage.index',[
-            'user'=>$user,
-            'article'=>$article,
-            'bookmark'=>$bookmark,
+        $article = Auth::user()->Article()->get();
+        $bookmark = Auth::user()->Bookmark()->get();
+        return redirect()->route('mypage.index', [
+            'user' => $user,
+            'article' => $article,
+            'bookmark' => $bookmark,
         ]);
     }
 

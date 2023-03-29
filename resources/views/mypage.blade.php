@@ -1,27 +1,97 @@
 @extends('layout')
 
 @section('content')
+
+<section class="jumbotron text-center">
+    <div class="container d-flex">
+        <div class="col-lg-4">
+            <br>
+            <img class="rounded-circle" src="{{asset($user->image)}}" alt="Generic placeholder image" width="140" height="140">
+        </div>
+        <div class="col-lg-4">
+            <br>
+            <h2>{{$user['name']}}</h2>
+            <p>{{$user['profile']}}</p>
+            <p><a class="btn btn-secondary" href="{{ route('mypage.edit',['mypage'=>$user['id']])}}" role="button">
+                    ユーザー情報を編集</a></p>
+        </div>
+    </div>
+</section>
+
+<main role="main" class="container">
+    <div class="row">
+        <div class="col-md-8 blog-main">
+            @if (session('flash_message'))
+            <div class="flash_message">
+                {{ session('flash_message') }}
+            </div>
+            @endif
+            <h2>投稿記事一覧</h2>
+            @if(isset($articles))
+            @foreach($articles as $article)
+            <div class="col-md-8">
+                <div class="card mb-4 shadow-sm">
+                    <a href="{{ route('article.show',$article->id) }}">
+                        <img class="card-img-top" data-src="holder.js/100px225?theme=thumb&amp;bg=55595c&amp;fg=eceeef&amp;text=Thumbnail" alt="holder.js/100px225?theme=thumb&amp;bg=55595c&amp;fg=eceeef&amp;text=Thumbnail" style="height: 225px; width: 100%; display: block;" src="{{asset($article->image)}}" data-holder-rendered="true">
+                        <h4 class="card-text">　{{ $article->title }}</h4>
+                    </a>
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center text-dark">
+                            <p><a class="btn btn-outline-dark my-2 my-sm-0" href="{{ route('article.edit',['article'=>$article['id']])}}" role="button">
+                                    <input class="btn btn-outline-dark my-2 my-sm-0" value='$article->id' type="hidden">
+                                    編集
+                                </a></p>
+                            <form action="{{route('article.destroy',$article->id)}}" method="POST">
+                                <input class="btn btn-outline-dark my-2 my-sm-0" value='削除' type="submit" data-toggle="modal" data-target="#testModal" onclick='return confirm("削除しますか？");'>
+                                @method('delete')
+                                @csrf
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </br>
+            @endforeach
+            @else
+            <h2>まだ記事が投稿されていません</h2>
+            @endif
+
+        </div><!-- /.blog-main -->
+
+        <aside class="col-md-4 blog-sidebar">
+            <h2>ブックマーク一覧</h2>
+            @foreach($bookmarks as $bookmark)
+            <div class="card mb-4 shadow-sm">
+                <a href="{{ route('article.show',$bookmark->id) }}">
+                    @if(isset($bookmark->image))
+                    <img class="card-img-top" data-src="holder.js/100px225?theme=thumb&amp;bg=55595c&amp;fg=eceeef&amp;text=Thumbnail" alt="holder.js/100px225?theme=thumb&amp;bg=55595c&amp;fg=eceeef&amp;text=Thumbnail" style="height: 225px; width: 100%; display: block;" src="{{asset($bookmark->image)}}" data-holder-rendered="true">
+                    @else
+                    <img class="card-img-top" data-src="holder.js/100px225?theme=thumb&amp;bg=55595c&amp;fg=eceeef&amp;text=Thumbnail" alt="holder.js/100px225?theme=thumb&amp;bg=55595c&amp;fg=eceeef&amp;text=Thumbnail" style="height: 225px; width: 100%; display: block;" src="holder.js/100px225?theme=thumb&amp;bg=55595c&amp;fg=eceeef&amp;text=Thumbnail" data-holder-rendered="true">
+                    @endif
+                    <h4 class="card-text">　{{ $bookmark->title }}</h4>
+                </a>
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center text-dark">
+                        <form action="{{route('article.destroy',$bookmark->id)}}" method="POST">
+                            <input class="btn btn-outline-dark my-2 my-sm-0" value='削除' type="submit" data-toggle="modal" data-target="#testModal" onclick='return confirm("削除しますか？");'>
+                            @method('delete')
+                            @csrf
+                        </form>
+                    </div>
+                </div>
+            </div>
+            @endforeach
+
+        </aside><!-- /.blog-sidebar -->
+
+    </div><!-- /.row -->
+
+</main>
+
 <div class=”row”>
 
     <div class=”col-8″>
         <main role="main">
-
-            <section class="jumbotron text-center">
-                <div class="container d-flex">
-                    <div class="col-lg-4">
-                        <br>
-                        <img class="rounded-circle" src="{{asset($user->image)}}" alt="Generic placeholder image" width="140" height="140">
-                    </div>
-                    <div class="col-lg-4">
-                        <br>
-                        <h2>{{$user['name']}}</h2>
-                        <p>{{$user['profile']}}</p>
-                        <p><a class="btn btn-secondary" href="{{ route('mypage.edit',['mypage'=>$user['id']])}}" role="button">
-                                ユーザー情報を編集</a></p>
-                    </div>
-                </div>
-            </section>
-
             <div class="album py-5 bg-light">
                 <div class="container">
                     @if (session('flash_message'))
@@ -59,26 +129,29 @@
                         @else
                         <h2>まだ記事が投稿されていません</h2>
                         @endif
-                        <aside class="col-md-4 blog-sidebar">
+                        <aside class="blog-sidebar">
                             <h2>ブックマーク一覧</h2>
                             @foreach($bookmarks as $bookmark)
-                            <div class="col-md-4">
-                                <div class="card mb-4 shadow-sm">
-                                    <a href="{{ route('article.show',$article->id) }}">
-                                        <img class="card-img-top" data-src="holder.js/100px225?theme=thumb&amp;bg=55595c&amp;fg=eceeef&amp;text=Thumbnail" alt="holder.js/100px225?theme=thumb&amp;bg=55595c&amp;fg=eceeef&amp;text=Thumbnail" style="height: 225px; width: 100%; display: block;" src="{{asset($article->image)}}" data-holder-rendered="true">
-                                        <h4 class="card-text">　{{ $bookmark->title }}</h4>
-                                    </a>
-                                    <div class="card-body">
-                                        <div class="d-flex justify-content-between align-items-center text-dark">
-                                            <form action="{{route('article.destroy',$article->id)}}" method="POST">
-                                                <input class="btn btn-outline-dark my-2 my-sm-0" value='削除' type="submit" data-toggle="modal" data-target="#testModal" onclick='return confirm("削除しますか？");'>
-                                                @method('delete')
-                                                @csrf
-                                            </form>
-                                        </div>
+                            <div class="card mb-4 shadow-sm">
+                                <a href="{{ route('article.show',$bookmark->id) }}">
+                                    @if(isset($bookmark->Article->image))
+                                    <img class="card-img-top" data-src="holder.js/100px225?theme=thumb&amp;bg=55595c&amp;fg=eceeef&amp;text=Thumbnail" alt="holder.js/100px225?theme=thumb&amp;bg=55595c&amp;fg=eceeef&amp;text=Thumbnail" style="height: 225px; width: 100%; display: block;" src="{{asset($bookmark->Article->image)}}" data-holder-rendered="true">
+                                    @else
+                                    <img class="card-img-top" data-src="holder.js/100px225?theme=thumb&amp;bg=55595c&amp;fg=eceeef&amp;text=Thumbnail" alt="holder.js/100px225?theme=thumb&amp;bg=55595c&amp;fg=eceeef&amp;text=Thumbnail" style="height: 225px; width: 100%; display: block;" src="holder.js/100px225?theme=thumb&amp;bg=55595c&amp;fg=eceeef&amp;text=Thumbnail" data-holder-rendered="true">
+                                    @endif
+                                    <h4 class="card-text">　{{ $bookmark->title }}</h4>
+                                </a>
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between align-items-center text-dark">
+                                        <form action="{{route('article.destroy',$bookmark->id)}}" method="POST">
+                                            <input class="btn btn-outline-dark my-2 my-sm-0" value='削除' type="submit" data-toggle="modal" data-target="#testModal" onclick='return confirm("削除しますか？");'>
+                                            @method('delete')
+                                            @csrf
+                                        </form>
                                     </div>
                                 </div>
-                                @endforeach
+                            </div>
+                            @endforeach
                         </aside>
                         <!-- 削除用モーダル -->
                         <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
