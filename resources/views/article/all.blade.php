@@ -65,70 +65,119 @@
 
       <div class="p-3">
         <h4 class="font-italic"></h4>
-        @auth
-        @if (!$article->bookmarked(Auth::user()))
-        <span class="bookmarks">
-          <button type="button" class="btn btn-outline-dark mb-12  bookmark-toggle " data-article-id="{{ $article->id }}" data-toggle="modal" data-target="#testModal">
-            <i class="fa-regular fa-star fa-lg ">
-              ブックマーク</i></button>
-          <!-- <span class="bookmark-counter">{{$article->bookmark}}</span> -->
-        </span>
-        @else
-        <div class="row mb-5">
-          <span class="bookmarks">
-            <button type="button" class="btn btn-outline-warning mb-12 bookmarked bookmark-toggle" data-article-id="{{ $article->id }}" data-toggle="modal" data-target="#testModal">
-              <i class="fa-regular fa-star fa-lg ">ブックマーク</i></button>
-            <!-- <span class="bookmark-counter">{{$article->bookmark}}</span> -->
-          </span>
-          @endif
-
-          @endauth
-
-          <br>
-          <br>
-          <br>
-          <div class="ml-3">
-            <form action="{{ route('send.comment',['comment'=>$article['id']])}}" method="post">
-              @csrf
-              コメント
-              <div class="ml-3 d-flex">
-                <div>
-                  <input type='text' class='form-control' name='comment' id='comment' value="" />
-                  <input type='hidden' class='form-control' name='id' id='id' value="{{$article['id']}}" />
-                </div>
-                <div>
-                  <button type='submit' class='btn btn-primary'>送信</button>
-                </div>
-              </div>
-            </form>
-          </div>
-          @if($errors->any())
-          <div class='alert alert-danger'>
-            <ul>
-              @foreach($errors->all() as $message)
-              <li>{{$message}}</li>
-              @endforeach
-            </ul>
-          </div>
-          @endif
-          <div>
-            @foreach($comments as $comment)
-            {{$comment['text']}}
-            <br>
-            <div class="mb-12  text-right">
-              <small>by　{{$comment['name']}}</small>
-              <br>
-              <small>　　　　{{$comment['created_at']}}</small><br>
+        <div class="row mb-5 d-flex justify-content-around">
+          @auth
+          @if (!$article->bookmarked(Auth::user()))
+          <div class="bookmarks  d-flex justify-content-around">
+            <div>
+              <button type="button" class="btn btn-outline-dark mb-8   bookmark-toggle" data-article-id="{{ $article->id }}">
+                <i class="fa-solid fa-bookmark fa-lg"></i>
+                ブックマーク</button>
             </div>
-            @endforeach
+            <!-- <span class="bookmark-counter">{{$article->bookmark}}</span> -->
+            <div>
+              <button type="button" class="btn btn-primary mb-3" data-toggle="modal" data-target="#testModal">
+                <i class=" fa-brands fa-staylinked fa-lg"></i>
+              </button>
+            </div>
           </div>
+          @else
+          <div class="bookmarks  d-flex justify-content-around">
+            <div>
+              <button type="button" class="btn  mb-8  btn-outline-dark bookmarked bookmark-toggle" data-article-id=" {{ $article->id }}">
+                <i class="fa-solid fa-bookmark fa-lg"></i>
+                <i class="fa-solid fa-bookmark fa-lg"></i>ブックマーク</button>
+              <!-- <span class="bookmark-counter">{{$article->bookmark}}</span> -->
+            </div>
+            <div>
+              <button type="button" class="btn btn-primary mb-3" data-toggle="modal" data-target="#testModal">
+                <i class=" fa-brands fa-staylinked fa-lg"></i>
+              </button>
+            </div>
+          </div>
+          @endif
         </div>
       </div>
-    </aside><!-- /.blog-sidebar -->
+
+      @endauth
+
+      <br>
+      <br>
+      <br>
+      <div class="ml-3">
+        <form action="{{ route('send.comment',['comment'=>$article['id']])}}" method="post">
+          @csrf
+          コメント
+          <div class="ml-3 d-flex">
+            <div>
+              <input type='text' class='form-control' name='comment' id='comment' value="" />
+              <input type='hidden' class='form-control' name='id' id='id' value="{{$article['id']}}" />
+            </div>
+            <div>
+              <button type='submit' class='btn btn-primary'>送信</button>
+            </div>
+          </div>
+        </form>
+      </div>
+      @if($errors->any())
+      <div class='alert alert-danger'>
+        <ul>
+          @foreach($errors->all() as $message)
+          <li>{{$message}}</li>
+          @endforeach
+        </ul>
+      </div>
+      @endif
+      <div>
+        @foreach($comments as $comment)
+        {{$comment['text']}}
+        <br>
+        <div class="mb-12  text-right">
+          <small>by　{{$comment['name']}}</small>
+          <br>
+          <small>　　　　{{$comment['created_at']}}</small><br>
+        </div>
+        @endforeach
+      </div>
+  </div>
+  </div>
+  </aside><!-- /.blog-sidebar -->
 
   </div><!-- /.row -->
 
 </main><!-- /.container -->
+<!-- 以下、モーダル -->
+<div class="modal fade" id="testModal" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4>関連記事選択</h4>
+      </div>
+      <div class="modal-body">
+        <label>
+          <p>この記事と深く関連する記事があれば選択してください</p>
+        </label>
+        <form action="{{route('Bookmark.update',$new_bookmark->id)}}" method="post" enctype="multipart/form-data">
+          @csrf
+          <div class=" form-group">
+            <select class="form-control" size="3" name="chaining">
+              @foreach($bookmarks as $bookmark)
+              <option value="{{$article->id}}">
+                {{ $bookmark->title }}
+              </option>
+              @endforeach
+            </select>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">登録しない</button>
+            <button type="button" class="btn btn-primary" type="submit">登録</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+<!-- 以上、モーダル -->
 
 <script src="../../assets/js/vendor/holder.min.js"></script>
 <script>
@@ -168,8 +217,8 @@
     content: "\f001";
   } */
   .bookmarked {
-    color: yellow;
-    border-color: yellow;
+    color: white;
+    background-color: blue;
   }
 </style>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>

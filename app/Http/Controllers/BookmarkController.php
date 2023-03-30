@@ -73,8 +73,6 @@ class BookmarkController extends Controller
      */
     public function update(Request $request, Bookmark $bookmark, Article $article)
     {
-        $category = new Category;
-        $bookmark = Bookmark::where('id', $bookmark)->first();
         $bookmark->chaining = $request->chaining;
         $user = Auth::user();
         $bookmark->save();

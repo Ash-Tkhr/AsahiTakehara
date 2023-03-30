@@ -70,15 +70,6 @@
                     @endif
                     <h4 class="card-text">　{{ $bookmark->title }}</h4>
                 </a>
-                <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-center text-dark">
-                        <form action="{{route('Bookmark.destroy',$bookmark->id)}}" method="POST">
-                            <input class="btn btn-outline-dark my-2 my-sm-0" value='ブックマーク解除' type="submit">
-                            @method('delete')
-                            @csrf
-                        </form>
-                    </div>
-                </div>
             </div>
             @endforeach
 

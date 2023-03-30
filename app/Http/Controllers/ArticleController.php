@@ -109,9 +109,10 @@ class ArticleController extends Controller
         $user = Auth::user();
         $bookmarks = Bookmark::Join('articles', 'bookmarks.article_id', '=', 'articles.id')
             ->where('bookmarks.user_id', Auth::id())
-            ->select('articles.id as article_id', 'articles.title', 'articles.image')
+            ->select('articles.id as article_id', 'articles.title', 'articles.image', 'bookmarks.id')
             ->get();
         $new_bookmark = $bookmarks->where('article_id', $article->id)->first();
+
         return view("article", [
             'article' => $article,
             'comments' => $comment,
