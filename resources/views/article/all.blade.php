@@ -70,30 +70,29 @@
           @if (!$article->bookmarked(Auth::user()))
           <div class="bookmarks  d-flex justify-content-around">
             <div>
-              <button type="button" class="btn btn-outline-dark mb-8   bookmark-toggle" data-article-id="{{ $article->id }}">
-                <i class="fa-solid fa-bookmark fa-lg"></i>
+              <button type="button" class="btn btn-outline-dark mb-12   bookmark-toggle" data-article-id="{{ $article->id }}">
+                <i class="fa-solid fa-star fa-lg"></i>
                 ブックマーク</button>
             </div>
             <!-- <span class="bookmark-counter">{{$article->bookmark}}</span> -->
-            <div>
+            <!-- <div>
               <button type="button" class="btn btn-primary mb-3" data-toggle="modal" data-target="#testModal">
                 <i class=" fa-brands fa-staylinked fa-lg"></i>
               </button>
-            </div>
+            </div> -->
           </div>
           @else
           <div class="bookmarks  d-flex justify-content-around">
             <div>
-              <button type="button" class="btn  mb-8  btn-outline-dark bookmarked bookmark-toggle" data-article-id=" {{ $article->id }}">
-                <i class="fa-solid fa-bookmark fa-lg"></i>
-                <i class="fa-solid fa-bookmark fa-lg"></i>ブックマーク</button>
+              <button type="button" class="btn  mb-12  btn-outline-dark bookmarked bookmark-toggle font-weight-bold" data-article-id=" {{ $article->id }}">
+                <i class="fa-solid fa-star fa-lg"></i>ブックマーク</button>
               <!-- <span class="bookmark-counter">{{$article->bookmark}}</span> -->
             </div>
-            <div>
+            <!-- <div>
               <button type="button" class="btn btn-primary mb-3" data-toggle="modal" data-target="#testModal">
                 <i class=" fa-brands fa-staylinked fa-lg"></i>
               </button>
-            </div>
+            </div> -->
           </div>
           @endif
         </div>
@@ -146,38 +145,7 @@
   </div><!-- /.row -->
 
 </main><!-- /.container -->
-<!-- 以下、モーダル -->
-<div class="modal fade" id="testModal" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4>関連記事選択</h4>
-      </div>
-      <div class="modal-body">
-        <label>
-          <p>この記事と深く関連する記事があれば選択してください</p>
-        </label>
-        <form action="{{route('Bookmark.update',$new_bookmark->id)}}" method="post" enctype="multipart/form-data">
-          @csrf
-          <div class=" form-group">
-            <select class="form-control" size="3" name="chaining">
-              @foreach($bookmarks as $bookmark)
-              <option value="{{$article->id}}">
-                {{ $bookmark->title }}
-              </option>
-              @endforeach
-            </select>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">登録しない</button>
-            <button type="button" class="btn btn-primary" type="submit">登録</button>
-        </form>
-      </div>
-    </div>
-  </div>
-</div>
-</div>
-<!-- 以上、モーダル -->
+
 
 <script src="../../assets/js/vendor/holder.min.js"></script>
 <script>
@@ -218,7 +186,7 @@
   } */
   .bookmarked {
     color: white;
-    background-color: blue;
+    background-color: yellow;
   }
 </style>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>

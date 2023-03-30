@@ -66,7 +66,7 @@
       <div>
         興味：{{ $article->interest }}<br>
         反復：{{ $article->repeat }}<br>
-        研究：{{ $article->study }}<br>
+        知識：{{ $article->study }}<br>
         活動：{{ $article->answer }}<br>
         反応：{{ $article->reaction }}
       </div>

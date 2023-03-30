@@ -15,21 +15,18 @@
   <!-- 以下、テスト用のあれこれ -->
   <div class="d-flex col-md-8 row justify-content-around">
     <div>
-      <button class="btn btn-primary" type="submit" href="{{ route('owner') }}">
-        <span class="search">
-          トピックス一覧
-        </span>
+      <button class="btn btn=primary">
+        <p><a href="{{ route('topic.create') }}">トピックス投稿</a></p>
       </button>
     </div>
     <div>
-      <button class="btn btn-primary" type="submit" href="{{ route('topic.create') }}">
-        <span class="search">
-          トピックス投稿
-        </span>
+      <button class="btn btn=primary">
+        <p><a href="{{ route('owner') }}">トピックス一覧</a></p>
       </button>
     </div>
   </div>
-  <br>
+
+
 
   <!-- 以上、テスト用のあれこれ -->
 

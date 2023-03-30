@@ -168,6 +168,7 @@ class RegistrationController extends Controller
     public function articleAll(Article $article, Request $request)
     {
         $logue = new Logue;
+        $article = Article::where('id', $article->id)->first();
         $logue->user_id = Auth::id();
         $logue->article_id = $article->id;
         if (DB::table('logues')->where('user_id', Auth::id())->where('article_id', $article->id)
@@ -194,9 +195,11 @@ class RegistrationController extends Controller
             )->groupBy('user_id')
             ->having('user_count', '>', 1)
             ->get();
-        $article->repeat = $repeater->count();
+        $article->repeat = $repeater->count($repeater);
+        $bookmark = Bookmark::where('article_id', $article->id)->get();
+        $article->study = count($bookmark) + count($repeater);
 
-        $article = Article::where('id', $article->id)->first();
+
         $maincategory = Category::Join('articles', 'categories.id', '=', 'articles.maincategory_id')
             ->where('articles.id', $article->id)
             ->first();
