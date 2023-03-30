@@ -2,20 +2,21 @@
 
 @section('content')
 <main role="main" class="container center-block">
-  <br>
-  <br> <br>
-  <br>
-  <div class="col-md-6 px-0">
-    <h1 class="display-4 font-italic"></h1>
-    <img src="{{asset($topics->image)}}" style="height: 300px; width: auto; display: block;" alt="Thumbnail [100%x300]" class="img-fluid height: 300px; width: auto;" />
-  </div>
-  <hr>
-  <br>
-  <br>
-
   <main role="main" class="container">
     <div class="row">
       <div class="col-md-8 blog-main">
+        <br>
+        <br>
+        <br>
+        <br>
+        <div class="col-md-12 px-0">
+          <h1 class="display-4 font-italic"></h1>
+          <img src="{{asset($topics->image)}}" style="height: 300px; width: auto; display: block;" alt="Thumbnail [100%x300]" class="img-fluid height: 300px; width: auto;" />
+        </div>
+        <hr>
+        <br>
+        <br>
+
         <div class="blog-post">
           <h2 class="blog-post-title">{{$topics['title']}}</h2>
           <form class="form-inline my-2 my-lg-0" action="{{ route('article.search')}}" method="get">
@@ -49,10 +50,14 @@
 
       </div><!-- /.blog-main -->
       <aside class="col-md-4 blog-sidebar">
+        <br>
+        <br>
+        <br>
+        <br>
         <h2 class="col-md-12 mb-2">その他のトピックス</h2>
         <div class="row justify-content-around">
           @foreach($others as $other)
-          <div class="col-md-12 mb-2">
+          <div class="col-md-12 mb-4">
             <div class="card mb-4 shadow-sm">
               <a href="{{ route('topic.show',$other->id) }}">
                 <img class="card-img-top" data-src="holder.js/100px225?theme=thumb&amp;bg=55595c&amp;fg=eceeef&amp;text=Thumbnail" alt="holder.js/100px225?theme=thumb&amp;bg=55595c&amp;fg=eceeef&amp;text=Thumbnail" style="height: 225px; width: 100%; display: block;" src="{{asset($other->image)}}" data-holder-rendered="true">

@@ -13,8 +13,23 @@
   </section>
 
   <!-- 以下、テスト用のあれこれ -->
-  <p>トピックを<a href="{{ route('topic.create') }}">投稿</a></p>
-  <p>トピックの<a href="{{ route('owner') }}">一覧</a></p>
+  <div class="d-flex col-md-8 row justify-content-around">
+    <div>
+      <button class="btn btn-primary" type="submit" href="{{ route('owner') }}">
+        <span class="search">
+          トピックス一覧
+        </span>
+      </button>
+    </div>
+    <div>
+      <button class="btn btn-primary" type="submit" href="{{ route('topic.create') }}">
+        <span class="search">
+          トピックス投稿
+        </span>
+      </button>
+    </div>
+  </div>
+  <br>
 
   <!-- 以上、テスト用のあれこれ -->
 
@@ -24,9 +39,9 @@
       <p>最新のスポーツニュースやトピックスをお届けします</p>
       <div class="row justify-content-around">
         @foreach($topics as $topic)
-        <div class="col-md-4 mb-3">
+        <div class="col-md-4 mb-4">
           <div class="card mb-4 shadow-sm">
-            <a href="{{ route('topic.show',$topic->id) }}">
+            <a href="{{ route('topic.show',$topic->id) }}" class=" mb-4">
               <img class="card-img-top" data-src="holder.js/100px225?theme=thumb&amp;bg=55595c&amp;fg=eceeef&amp;text=Thumbnail" alt="holder.js/100px225?theme=thumb&amp;bg=55595c&amp;fg=eceeef&amp;text=Thumbnail" style="height: 225px; width: 100%; display: block;" src="{{asset($topic->image)}}" data-holder-rendered="true">
               <h5 class="card-text">　{{ $topic->title }}</h5>
             </a>
@@ -53,9 +68,9 @@
       <p>最新のスポーツニュースやトピックスをお届けします</p>
       <div class="row justify-content-around">
         @foreach($topics as $topic)
-        <div class="col-md-4 mb-3">
+        <div class="col-md-4 mb-4">
           <div class="card mb-4 shadow-sm">
-            <a href="{{ route('topic.show',$topic->id) }}">
+            <a href="{{ route('topic.show',$topic->id) }}" class=" mb-4">
               <img class="card-img-top" data-src="holder.js/100px225?theme=thumb&amp;bg=55595c&amp;fg=eceeef&amp;text=Thumbnail" alt="holder.js/100px225?theme=thumb&amp;bg=55595c&amp;fg=eceeef&amp;text=Thumbnail" style="height: 225px; width: 100%; display: block;" src="{{asset($topic->image)}}" data-holder-rendered="true">
               <h5 class="card-text">　{{ $topic->title }}</h5>
             </a>

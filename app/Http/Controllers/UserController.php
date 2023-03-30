@@ -75,7 +75,7 @@ class UserController extends Controller
     public function show(User $mypage, Request $request)
     {
         $user = Auth::user();
-        $articles = Article::where('user_id', Auth::id())->get();
+        $articles = Article::where('user_id', Auth::id())->latest()->get();
         $bookmarks = Bookmark::Join('articles', 'bookmarks.article_id', '=', 'articles.id')
             ->where('bookmarks.user_id', Auth::id())
             ->select('articles.id', 'articles.title', 'articles.image')

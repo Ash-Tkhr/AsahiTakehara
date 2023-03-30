@@ -20,19 +20,18 @@
         <form class="form-inline my-2" action="{{ route('article.search')}}" method="get">
           <input class="form-control mr-sm-2" type="search" placeholder="検索" aria-label="Search" name="searchword" value="{{$search}}">
           <select name="search" id="search" class="form-select form-select-lg col-md-4">
-            <option value="1" {{ $select == '1' ? 'selected': '' }}>指定なし</option>
-            <option value="2" {{ $select == '2' ? 'selected': '' }}>投稿日時が新しい順</option>
-            <option value="3" {{ $select == '3' ? 'selected': '' }}>投稿日時が古い順</option>
-            <option value="4" {{ $select == '4' ? 'selected': '' }}>興味ベクトル降順</option>
-            <option value="5" {{ $select == '5' ? 'selected': '' }}>興味ベクトル昇順</option>
-            <option value="6" {{ $select == '6' ? 'selected': '' }}>反復ベクトル降順</option>
-            <option value="7" {{ $select == '7' ? 'selected': '' }}>反復ベクトル昇順</option>
-            <option value="8" {{ $select == '8' ? 'selected': '' }}>研究ベクトル降順</option>
-            <option value="9" {{ $select == '9' ? 'selected': '' }}>研究ベクトル昇順</option>
-            <option value="10" {{ $select == '10' ? 'selected': '' }}>活動ベクトル降順</option>
-            <option value="11" {{ $select == '11' ? 'selected': '' }}>活動ベクトル昇順</option>
-            <option value="12" {{ $select == '12' ? 'selected': '' }}>反応ベクトル降順</option>
-            <option value="13" {{ $select == '13' ? 'selected': '' }}>反応ベクトル昇順</option>
+            <option value="1" {{ $select == '1' ? 'selected': '' }}>投稿日時が新しい順</option>
+            <option value="2" {{ $select == '2' ? 'selected': '' }}>投稿日時が古い順</option>
+            <option value="3" {{ $select == '3' ? 'selected': '' }}>興味ベクトル降順</option>
+            <option value="4" {{ $select == '4' ? 'selected': '' }}>興味ベクトル昇順</option>
+            <option value="5" {{ $select == '5' ? 'selected': '' }}>再訪ベクトル降順</option>
+            <option value="6" {{ $select == '6' ? 'selected': '' }}>再訪ベクトル昇順</option>
+            <option value="7" {{ $select == '7' ? 'selected': '' }}>知識ベクトル降順</option>
+            <option value="8" {{ $select == '8' ? 'selected': '' }}>知識ベクトル昇順</option>
+            <option value="9" {{ $select == '9' ? 'selected': '' }}>活動ベクトル降順</option>
+            <option value="10" {{ $select == '10' ? 'selected': '' }}>活動ベクトル昇順</option>
+            <option value="11" {{ $select == '11' ? 'selected': '' }}>反応ベクトル降順</option>
+            <option value="12" {{ $select == '12' ? 'selected': '' }}>反応ベクトル昇順</option>
           </select>
           <button class="btn btn-primary" type="submit">
             <span class="search">
@@ -46,7 +45,7 @@
 
 
     @foreach($articles as $article)
-    <div class="col-md-4 ml-md-5">
+    <div class="col-md-8 ml-md-5 d-flex">
       <a href="{{ route('article.show',$article->id) }}">
         <div class="card mb-4 shadow-sm">
           <img class="card-img-top" data-src="holder.js/100px225?theme=thumb&amp;bg=55595c&amp;fg=eceeef&amp;text=Thumbnail" alt="Thumbnail [100%x225]" style="height: 225px; width: 100%; display: block;" src="{{asset($article->image)}}" data-holder-rendered="true">
@@ -64,6 +63,13 @@
           </div>
         </div>
       </a>
+      <div>
+        興味：{{ $article->interest }}<br>
+        反復：{{ $article->repeat }}<br>
+        研究：{{ $article->study }}<br>
+        活動：{{ $article->answer }}<br>
+        反応：{{ $article->reaction }}
+      </div>
     </div>
     </br>
     @endforeach

@@ -2,20 +2,18 @@
 
 @section('content')
 <main role="main" class="container">
-    <div class="col-md-6 px-0">
-        <br>
-        <br> <br>
-        <br>
-        <h1 class="display-4 font-italic"></h1>
-        <img src="{{asset($article->image)}}" style="height: 300px; width: auto; display: block;" alt="Thumbnail [100%x300]" class="img-fluid height: 300px; width: auto;" />
-    </div>
-    <hr>
-    <br>
-    <br>
-
     <div class="row">
-
         <div class="col-md-8 blog-main">
+            <div class="col-md-12 px-0">
+                <br>
+                <br>
+                <br>
+                <br>
+                <h1 class="display-4 font-italic"></h1>
+                <img src="{{asset($article->image)}}" style="height: 300px; width: auto; display: block;" alt="Thumbnail [100%x300]" class="img-fluid height: 300px; width: auto;" />
+            </div>
+            <hr>
+            <br>
             <div class="blog-post">
                 <h2 class="blog-post-title font-italic">{{$article['title']}}</h2>
                 <form class="form-inline my-2 my-lg-0" action="{{ route('article.search')}}" method="get">
@@ -55,6 +53,10 @@
         </div><!-- /.blog-main -->
 
         <aside class="col-md-4 blog-sidebar">
+            <br>
+            <br>
+            <br>
+            <br>
             <div class="container d-flex  align-items-center">
                 <div class="col-lg-4">
                     <br>
@@ -87,25 +89,7 @@
                     @endif
 
                     @endauth
-                    <!-- 以下、モーダル -->
-                    <!-- <div class="modal fade" id="testModal" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h4>関連記事選択</h4>
-                                    </div>
-                                    <div class="modal-body">
-                                        <label><p>この記事と相関性のある記事があれば</p>
-                                        <p>選択してください</p></label>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-default" data-dismiss="modal">キャンセル</button>
-                                        <button type="button" class="btn btn-primary">登録</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div> -->
-                    <!-- 以上、モーダル -->
+
                     <br>
                     <br>
                     <br>

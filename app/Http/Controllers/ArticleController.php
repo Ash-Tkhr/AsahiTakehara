@@ -107,12 +107,19 @@ class ArticleController extends Controller
             ->select('users.name', 'comments.text', 'comments.created_at')
             ->get();
         $user = Auth::user();
+        $bookmarks = Bookmark::Join('articles', 'bookmarks.article_id', '=', 'articles.id')
+            ->where('bookmarks.user_id', Auth::id())
+            ->select('articles.id as article_id', 'articles.title', 'articles.image')
+            ->get();
+        $new_bookmark = $bookmarks->where('article_id', $article->id)->first();
         return view("article", [
             'article' => $article,
             'comments' => $comment,
             'user' => $user,
             'maincategory' => $maincategory,
             'subcategory' => $subcategory,
+            'bookmarks' => $bookmarks,
+            'new_bookmark' => $new_bookmark
         ]);
     }
 

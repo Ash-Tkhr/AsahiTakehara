@@ -65,7 +65,7 @@ class TopicController extends Controller
             $dir = 'picture';
             $image = $request->file('image')->getClientOriginalName();
             $request->file('image')->storeAs('public/' . $dir, $image);
-            $article->image = 'storage/' . $dir . '/' . $image;
+            $topics->image = 'storage/' . $dir . '/' . $image;
         }
         $topics->save();
         $id = Topic::latest('id')->first();

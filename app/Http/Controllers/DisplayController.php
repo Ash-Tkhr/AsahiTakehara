@@ -17,7 +17,7 @@ class DisplayController extends Controller
     public function index(Request $request)
     {
         $user = Auth::user();
-        $topics = Topic::latest()->take(15)->get();
+        $topics = Topic::latest()->paginate(9);
         return view('top', [
             'user' => $user,
             'topics' => $topics,
@@ -59,47 +59,44 @@ class DisplayController extends Controller
         // セレクトボックスの値に応じてソート
         switch ($select) {
             case '1':
-                $articles = $query->latest()->paginate(20);
-                break;
-            case '2':
                 $articles = $query->orderBy('created_at', 'desc')->paginate(20);
                 break;
-            case '3':
+            case '2':
                 $articles = $query->orderBy('created_at', 'asc')->paginate(20);
                 break;
-            case '4':
+            case '3':
                 $articles = $query->orderBy('interest', 'desc')->paginate(20);
                 break;
-            case '5':
+            case '4':
                 $articles = $query->orderBy('interest', 'asc')->paginate(20);
                 break;
-            case '6':
+            case '5':
                 $articles = $query->orderBy('repeat', 'desc')->paginate(20);
                 break;
-            case '7':
+            case '6':
                 $articles = $query->orderBy('repeat', 'asc')->paginate(20);
                 break;
-            case '8':
+            case '7':
                 $articles = $query->orderBy('study', 'desc')->paginate(20);
                 break;
-            case '9':
+            case '8':
                 $articles = $query->orderBy('study', 'asc')->paginate(20);
                 break;
-            case '10':
+            case '9':
                 $articles = $query->orderBy('answer', 'desc')->paginate(20);
                 break;
-            case '11':
+            case '10':
                 $articles = $query->orderBy('answer', 'asc')->paginate(20);
                 break;
-            case '12':
+            case '11':
                 $articles = $query->orderBy('reaction', 'desc')->paginate(20);
                 break;
-            case '13':
+            case '12':
                 $articles = $query->orderBy('reaction', 'asc')->paginate(20);
                 break;
             default:
                 // デフォルトはID順
-                $articles = $query->paginate(20);
+                $articles = $query->latest()->paginate(20);
                 break;
         }
         return view('article_search')
@@ -152,12 +149,19 @@ class DisplayController extends Controller
             ->select('users.name', 'comments.text', 'comments.created_at')
             ->get();
         $user = Auth::user();
-        return view("article/all", [
+        $bookmarks = Bookmark::Join('articles', 'bookmarks.article_id', '=', 'articles.id')
+            ->where('bookmarks.user_id', Auth::id())
+            ->select('articles.id as article_id', 'articles.title', 'articles.image')
+            ->get();
+        $new_bookmark = $bookmarks->where('article_id', $article->id)->first();
+        return view("article.all", [
             'article' => $article,
             'comments' => $comment,
             'user' => $user,
             'maincategory' => $maincategory,
             'subcategory' => $subcategory,
+            'bookmarks' => $bookmarks,
+            'new_bookmark' => $new_bookmark,
         ]);
     }
 }

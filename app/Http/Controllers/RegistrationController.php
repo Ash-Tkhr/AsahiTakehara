@@ -178,8 +178,14 @@ class RegistrationController extends Controller
             $logue->date = Carbon::now()->toDateString();
             $logue->save();
         }
-        $article->interest = Logue::where('article_id', $article->id)
-            ->count();
+        $visitor = Logue::where('article_id', $article->id)
+            ->select(
+                'user_id',
+                \DB::raw('COUNT(user_id) AS user_count')
+            )->groupBy('user_id')
+            ->having('user_count', '>=', 1)
+            ->get();
+        $article->interest = $visitor->count();
 
         $repeater = Logue::where('article_id', $article->id)
             ->select(
@@ -189,7 +195,6 @@ class RegistrationController extends Controller
             ->having('user_count', '>', 1)
             ->get();
         $article->repeat = $repeater->count();
-        $article->answer = Article::where('user_id', Auth::id())->count();
 
         $article = Article::where('id', $article->id)->first();
         $maincategory = Category::Join('articles', 'categories.id', '=', 'articles.maincategory_id')
