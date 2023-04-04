@@ -145,7 +145,38 @@
   </div><!-- /.row -->
 
 </main><!-- /.container -->
-
+<!-- 以下、モーダル -->
+<div class="modal fade" id="testModal" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4>関連記事選択</h4>
+      </div>
+      <div class="modal-body">
+        <label>
+          <p>この記事と深く関連する記事があれば選択してください</p>
+        </label>
+        <form action="{{route('Bookmark.update',$new_bookmark->id)}}" method="post" enctype="multipart/form-data">
+          @csrf
+          <div class=" form-group">
+            <select class="form-control" size="3" name="chaining">
+              @foreach($bookmarks as $bookmark)
+              <option value="{{$bookmark->article_id}}">
+                {{ $bookmark->title }}
+              </option>
+              @endforeach
+            </select>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">登録しない</button>
+            <button type="button" class="btn btn-primary" type="submit">登録</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- 以上、モーダル -->
 
 <script src="../../assets/js/vendor/holder.min.js"></script>
 <script>
